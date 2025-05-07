@@ -1,0 +1,17 @@
+---
+import NavLinks from "./NavLinks.astro";
+import MobileMenu from "@/components/header/MobileMenu.astro";
+import HamburgerIconButton from "@/components/shared/icons/HamburgerIconButton.astro";
+
+const { pathname } = Astro.url;
+const activePath = pathname === "/" ? "/" : pathname.replace(/\/$/, "");
+---
+
+<nav class="flex items-center">
+  <NavLinks
+    class="hidden md:flex md:flex-row space-x-2"
+    activePath={activePath}
+  />
+  <HamburgerIconButton id="menu-toggle" class="md:hidden" ariaLabel="Menu" />
+  <MobileMenu id="mobile-menu" class="hidden" activePath={activePath} />
+</nav>

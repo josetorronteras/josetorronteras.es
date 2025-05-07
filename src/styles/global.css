@@ -1,1 +1,25 @@
 @import "tailwindcss";
+@import "@fontsource-variable/space-grotesk";
+
+@theme {
+  --color-background: #131220;
+  --color-text: #fff;
+  --font-sans: "Space Grotesk Variable", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.container {
+  @apply mx-auto w-full max-w-full px-6 xl:max-w-[1280px];
+}
+
+@layer components {
+  .social-icon {
+    @apply h-[18px] w-[18px] transition-transform hover:scale-110;
+  }
+  .icon-button {
+    @apply text-text cursor-pointer transition-transform hover:scale-110 focus:outline-none;
+  }
+}
