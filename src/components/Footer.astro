@@ -1,5 +1,23 @@
 ---
-
+import SocialLinks from "@/components/header/SocialLinks.astro";
 ---
 
-<> </>
+<footer>
+  <p class="mt-4 text-sm text-gray-500">
+    Follow me on <a href="https://github.com/josetorronteras" class="link"
+      >Github</a
+    > for updates and insights.
+  </p>
+  <SocialLinks class="mt-4 justify-center" />
+</footer>
+
+<style>
+  @reference "@/styles/global.css";
+
+  footer {
+    @apply flex flex-col items-center justify-center p-10 text-center;
+  }
+  .link {
+    @apply text-(--color-primary) hover:underline;
+  }
+</style>

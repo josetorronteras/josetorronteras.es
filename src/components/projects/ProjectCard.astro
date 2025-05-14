@@ -1,0 +1,51 @@
+---
+import { Image } from "astro:assets";
+const { project } = Astro.props;
+---
+
+<article>
+  <div class="relative">
+    <Image
+      inferSize
+      src={project.image}
+      alt={project.imageAlt}
+      widths={[200, 400, 600, 1000, 1400]}
+      sizes="100vw"
+      loading="lazy"
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-gray-800/70 to-transparent"
+    >
+    </div>
+  </div>
+  <div class="p-6">
+    <h2 class="title">
+      <a href="/projects/static-project">
+        {project.title}
+      </a>
+    </h2>
+    <p class="description">
+      {project.description}
+    </p>
+  </div>
+</article>
+
+<style>
+  @reference "@/styles/global.css";
+
+  article {
+    @apply relative transform overflow-hidden rounded-lg border-4 border-(--color-border)/30 bg-(--color-background-alt) transition-transform hover:scale-105 hover:shadow-xl;
+    &:hover {
+      @apply scale-105 border-(--color-primary);
+    }
+  }
+  img {
+    @apply aspect-[16/9] object-cover;
+  }
+  .title {
+    @apply text-2xl font-semibold;
+  }
+  .description {
+    @apply mt-3;
+  }
+</style>
