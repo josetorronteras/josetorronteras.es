@@ -6,9 +6,12 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check"
   },
   "dependencies": {
-    "astro": "^5.7.9"
+    "@astrojs/check": "^0.9.4",
+    "astro": "^5.7.9",
+    "typescript": "^5.8.3"
   }
 }
