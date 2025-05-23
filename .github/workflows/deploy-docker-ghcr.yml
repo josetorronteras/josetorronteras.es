@@ -1,0 +1,61 @@
+name: Build and Push Docker Image to GHCR
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    name: Build and Push Docker Image
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            # For main: use "latest"
+            type=raw,value=latest,enable=${{ github.event_name == 'push' && github.ref_name == 'main' }}
+            # For PRs: use "pr-<number>"
+            type=ref,event=pr,prefix=pr-
+            # For commits on main or PRs: use short SHA
+            type=sha,format=short
+            # For commits on main or PRs: use the date in YYYYMMDD format (example: 20250405)
+            type=raw,value={{date 'YYYYMMDD'}},enable=${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+            # For tags/releases: use the tag version (example: v1.0.0)
+            type=match,pattern=v(.*),group=1,enable=${{ github.event_name == 'create' && startsWith(github.ref, 'refs/tags/v') }}
+          labels: |
+            org.opencontainers.image.description=${{ github.event_name == 'push' && 'Versión de desarrollo.' || 'Versión de producción.' }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          platforms: ${{ github.event_name == 'pull_request' && 'linux/amd64' || 'linux/amd64,linux/arm64' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
