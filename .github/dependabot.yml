@@ -1,0 +1,65 @@
+version: 2
+updates:
+  # Enable version updates for github-actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "22:00"
+    commit-message:
+      prefix: "deps"
+    labels:
+      - dependencies
+      - ci
+      - auto
+    groups:
+      all-actions:
+        patterns:
+          - "*"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
+
+  # Enable version updates for Docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "22:00"
+    commit-message:
+      prefix: "deps"
+    labels:
+      - dependencies
+      - docker
+      - auto
+    groups:
+      all-docker:
+        patterns:
+          - "*"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
+
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "22:00"
+    versioning-strategy: "increase"
+    commit-message:
+      prefix: "deps"
+    labels:
+      - dependencies
+      - frontend
+      - auto
+    groups:
+      all-npm:
+        patterns:
+          - "*"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
