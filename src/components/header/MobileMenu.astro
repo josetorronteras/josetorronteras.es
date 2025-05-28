@@ -1,0 +1,74 @@
+---
+import NavLinks from "@components/header/NavLinks.astro";
+import CloseIconButton from "@components/shared/icons/CloseIconButton.astro";
+import SocialLinks from "@components/header/SocialLinks.astro";
+
+const { class: className, activePath } = Astro.props;
+---
+
+<div id="mobile-menu" class={`${className} mobile-menu`}>
+  <CloseIconButton
+    id="mobile-close-menu"
+    class="absolute top-14 left-8"
+    aria-label="Close menu"
+  />
+  <NavLinks activePath={activePath} class="text-2xl flex flex-col" />
+  <div class="mt-10">
+    <SocialLinks class="flex gap-4 justify-center" />
+  </div>
+</div>
+
+<style>
+  @reference "@/styles/global.css";
+
+  .mobile-menu {
+    @apply bg-background fixed inset-0 z-50 flex flex-col items-center justify-center transition duration-200 ease-in-out md:hidden;
+
+    &.hidden {
+      @apply pointer-events-none -translate-y-10 opacity-0;
+    }
+    &:not(.hidden) {
+      @apply translate-y-0 opacity-100;
+    }
+  }
+</style>
+
+<script>
+  const menuToggle = document.getElementById("menu-toggle");
+  if (menuToggle) {
+    menuToggle.addEventListener("click", () => {
+      const mobileMenu = document.getElementById("mobile-menu");
+      const hamburgerIcon = document.getElementById("hamburger-icon");
+      const closeIcon = document.getElementById("close-icon");
+
+      mobileMenu?.classList.toggle("hidden");
+      hamburgerIcon?.classList.toggle("hidden");
+      closeIcon?.classList.toggle("hidden");
+    });
+  }
+
+  document.querySelectorAll("#mobile-menu a").forEach((link) => {
+    link.addEventListener("click", () => {
+      const mobileMenu = document.getElementById("mobile-menu");
+      const hamburgerIcon = document.getElementById("hamburger-icon");
+      const closeIcon = document.getElementById("close-icon");
+
+      mobileMenu?.classList.add("hidden");
+      hamburgerIcon?.classList.remove("hidden");
+      closeIcon?.classList.add("hidden");
+    });
+  });
+
+  const closeMenuButton = document.getElementById("mobile-close-menu");
+  if (closeMenuButton) {
+    closeMenuButton.addEventListener("click", () => {
+      const mobileMenu = document.getElementById("mobile-menu");
+      const hamburgerIcon = document.getElementById("hamburger-icon");
+      const closeIcon = document.getElementById("close-icon");
+
+      mobileMenu?.classList.add("hidden");
+      hamburgerIcon?.classList.remove("hidden");
+      closeIcon?.classList.add("hidden");
+    });
+  }
+</script>

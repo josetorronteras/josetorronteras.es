@@ -1,0 +1,39 @@
+---
+import NavMenu from "@/components/header/NavMenu.astro";
+import SocialLinks from "@/components/header/SocialLinks.astro";
+import LogoIcon from "@/components/shared/LogoIcon.astro";
+---
+
+<header class="header container">
+  <div class="header-container">
+    <div class="nav-menu">
+      <NavMenu />
+    </div>
+    <a href="/" aria-label="Inicio" class="logo">
+      <LogoIcon />
+    </a>
+    <div class="social-links">
+      <SocialLinks />
+    </div>
+  </div>
+</header>
+
+<style>
+  @reference "@/styles/global.css";
+
+  .header {
+    @apply w-full px-4 py-10 sm:px-6 lg:px-8;
+  }
+  .header-container {
+    @apply relative mx-auto flex min-h-[60px] max-w-screen-xl items-center justify-between;
+  }
+  .nav-menu {
+    @apply order-2 flex items-center md:order-0;
+  }
+  .logo {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:block;
+  }
+  .social-links {
+    @apply hidden items-center md:flex;
+  }
+</style>

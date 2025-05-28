@@ -35,6 +35,8 @@ jobs:
         run: npm run check
       - name: Build site
         run: npm run build
+      - name: Add .lycheeignore
+        run: cp .lycheeignore ./dist/.lycheeignore
       - name: Link Checker
         uses: lycheeverse/lychee-action@v2
         with:
