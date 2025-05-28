@@ -46,5 +46,3 @@ LICENSE
 # other configuration files
 .lycheeignore
 .prettierrc
-.astro.config.mjs
-tsconfig.json
