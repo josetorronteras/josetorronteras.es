@@ -3,7 +3,7 @@ import MailIcon from "@/components/shared/icons/social/MailIcon.astro";
 import GithubIcon from "@/components/shared/icons/social/GithubIcon.astro";
 import LinkedinIcon from "@/components/shared/icons/social/LinkedinIcon.astro";
 
-const { class: className } = Astro.props;
+const { class: className = "" } = Astro.props;
 ---
 
 <ul class={`${className} flex gap-4`}>

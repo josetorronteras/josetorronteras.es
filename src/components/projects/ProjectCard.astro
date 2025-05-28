@@ -20,7 +20,7 @@ const { project } = Astro.props;
   </div>
   <div class="p-6">
     <h2 class="title">
-      <a href="/projects/static-project">
+      <a href={`/projects/${project.id}`}>
         {project.title}
       </a>
     </h2>

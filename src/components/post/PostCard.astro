@@ -10,7 +10,7 @@ const { post } = Astro.props;
     alt={post.imageAlt}
     widths={[200, 400, 600, 1000, 1400]}
     sizes="100vw"
-    loading="eager"
+    loading="lazy"
   />
   <div class="content">
     <h2 class="title">
