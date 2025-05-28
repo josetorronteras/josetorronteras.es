@@ -39,3 +39,12 @@ LICENSE
 *.log
 *.bak
 *.swp
+
+# visual studio code settings
+.vscode/
+
+# other configuration files
+.lycheeignore
+.prettierrc
+.astro.config.mjs
+tsconfig.json
