@@ -35,10 +35,12 @@ jobs:
         run: npm run check
       - name: Build site
         run: npm run build
+      - name: Add .lycheeignore
+        run: cp .lycheeignore ./dist/.lycheeignore
       - name: Link Checker
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --verbose --no-progress --exclude-file=.lycheeignore './**/*.md' './**/*.html'
+          args: --verbose --no-progress './**/*.md' './**/*.html'
           fail: true
           failIfEmpty: false
           workingDirectory: "./dist"
