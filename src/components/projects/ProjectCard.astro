@@ -49,6 +49,6 @@ const { project } = Astro.props;
     @apply mt-3;
   }
   .link {
-    @apply after:absolute after:inset-0;
+    @apply relative after:absolute after:inset-0 after:content-[''];
   }
 </style>
