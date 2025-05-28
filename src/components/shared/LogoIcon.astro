@@ -29,22 +29,9 @@
   @reference "@/styles/global.css";
 
   .logo {
-    @apply scale-150 opacity-0 transition duration-500 ease-in;
-
-    &.animate-in {
-      @apply scale-100 opacity-100;
-    }
+    @apply transition duration-250;
     &:hover {
       @apply scale-105;
     }
   }
 </style>
-
-<script is:inline>
-  document.addEventListener("DOMContentLoaded", () => {
-    const logo = document.getElementById("logo");
-    setTimeout(() => {
-      logo?.classList.add("animate-in");
-    }, 100);
-  });
-</script>

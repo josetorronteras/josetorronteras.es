@@ -20,7 +20,7 @@ const { project } = Astro.props;
   </div>
   <div class="p-6">
     <h2 class="title">
-      <a href={`/projects/${project.id}`}>
+      <a class="link" href={`/projects/${project.id}`}>
         {project.title}
       </a>
     </h2>
@@ -47,5 +47,8 @@ const { project } = Astro.props;
   }
   .description {
     @apply mt-3;
+  }
+  .link {
+    @apply relative after:absolute after:inset-0 after:content-[''];
   }
 </style>
