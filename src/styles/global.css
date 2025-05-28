@@ -3,7 +3,10 @@
 
 @theme {
   --color-background: #131220;
+  --color-background-alt: #242137;
   --color-text: #fff;
+  --color-primary: var(--color-fuchsia-500);
+  --color-border: var(--color-gray-500);
   --font-sans: "Space Grotesk Variable", sans-serif;
 }
 

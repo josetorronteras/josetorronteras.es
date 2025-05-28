@@ -1,0 +1,48 @@
+---
+import { Image } from "astro:assets";
+const { post } = Astro.props;
+---
+
+<article>
+  <Image
+    inferSize
+    src={post.image}
+    alt={post.imageAlt}
+    widths={[200, 400, 600, 1000, 1400]}
+    sizes="100vw"
+    loading="lazy"
+  />
+  <div class="content">
+    <h2 class="title">
+      <a class="link" href={`/posts/${post.id}/`}>
+        {post.title}
+      </a>
+    </h2>
+  </div>
+</article>
+
+<style>
+  @reference "@/styles/global.css";
+
+  article {
+    @apply relative transition duration-250 ease-in;
+    &:hover {
+      @apply scale-105;
+      img {
+        @apply border-4 border-(--color-primary);
+      }
+    }
+  }
+  img {
+    @apply aspect-[16/9] rounded-2xl border-8 border-(--color-border)/30 object-cover;
+  }
+  .content {
+    @apply mt-4;
+  }
+  .title {
+    @apply text-text mt-3 px-2 text-2xl;
+  }
+  .link {
+    @apply after:absolute after:inset-0;
+  }
+</style>

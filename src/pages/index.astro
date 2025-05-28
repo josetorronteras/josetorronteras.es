@@ -1,7 +1,72 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import PostCard from "@/components/post/PostCard.astro";
+import ProjectCard from "@/components/projects/ProjectCard.astro";
+
+const posts = [];
+const projects = [];
 ---
 
 <Layout>
-  <main class="container"></main>
+  <main
+    class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16 pb-0 sm:pb-10 md:pb-20"
+  >
+    <div class="max-w-[1008px] mx-auto md:text-center">
+      <h1 class="heading-primary">
+        Crafting Pixel-Perfect iOS Apps with Code & Creativity
+      </h1>
+      <div class="content-description">
+        <p>
+          I'm an iOS developer who turns ideas into seamless, delightful apps
+          using <span>Swift</span>, <span>SwiftUI</span>, and a pinch of magic.
+          Explore my journey, tips, and tools for building apps that users love.
+        </p>
+      </div>
+      {
+        posts.length > 0 && (
+          <section class="mt-16">
+            <header class="flex gap-3 content-center items-center">
+              <h2 class="heading-secondary">Latest Posts</h2>
+            </header>
+            <div class="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
+              {posts.map((post) => (
+                <PostCard post={post} />
+              ))}
+            </div>
+          </section>
+        )
+      }
+      {
+        projects.length > 0 && (
+          <section class="mt-16">
+            <header>
+              <h2 class="heading-secondary">Latest Projects</h2>
+            </header>
+            <div class="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {projects.map((project) => (
+                <ProjectCard project={project} />
+              ))}
+            </div>
+          </section>
+        )
+      }
+    </div>
+  </main>
 </Layout>
+
+<style>
+  @reference "@/styles/global.css";
+
+  .heading-primary {
+    @apply text-text text-4xl leading-snug font-bold text-pretty sm:text-5xl lg:text-7xl;
+  }
+  .content-description {
+    @apply text-text/80 mx-auto mt-8 max-w-[700px] text-lg leading-relaxed sm:text-xl;
+    span {
+      @apply font-semibold text-(--color-primary);
+    }
+  }
+  .heading-secondary {
+    @apply text-text text-left text-2xl font-semibold sm:text-3xl;
+  }
+</style>
