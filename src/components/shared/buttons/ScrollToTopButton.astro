@@ -1,0 +1,63 @@
+---
+const { class: className = "", ariaLabel = "Scroll to top" } = Astro.props;
+---
+
+<button
+  id="scroll-to-top"
+  class={`${className} scroll-to-top icon-button hidden`}
+  aria-label={ariaLabel}
+>
+  <svg
+    class="w-6 h-6"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12 19V5M12 5L5 12M12 5L19 12"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+  </svg>
+</button>
+
+<style>
+  @reference "@/styles/global.css";
+
+  .scroll-to-top {
+    @apply fixed right-6 bottom-6 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-(--color-primary) text-white shadow-lg;
+
+    &.hidden {
+      @apply pointer-events-none -translate-y-2 opacity-0;
+    }
+    &:not(.hidden) {
+      @apply translate-y-0 opacity-100;
+    }
+  }
+</style>
+
+<script>
+  // Handle scroll to top button functionality
+  const scrollToTopButton = document.getElementById("scroll-to-top");
+  if (scrollToTopButton) {
+    // Show or hide the button based on scroll position
+    function toggleScrollToTopButton() {
+      if (window.scrollY > 300) {
+        scrollToTopButton?.classList.remove("hidden");
+      } else {
+        scrollToTopButton?.classList.add("hidden");
+      }
+    }
+    // Scroll to top smoothly
+    scrollToTopButton.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    });
+    // Listen for scroll events to toggle button visibility
+    window.addEventListener("scroll", toggleScrollToTopButton);
+    toggleScrollToTopButton();
+  }
+</script>
