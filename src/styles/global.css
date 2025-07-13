@@ -25,4 +25,7 @@ html {
   .icon-button {
     @apply text-text cursor-pointer transition-transform hover:scale-110 focus:outline-none;
   }
+  .heading-secondary {
+    @apply text-text/80 text-2xl leading-snug font-semibold sm:text-3xl;
+  }
 }
