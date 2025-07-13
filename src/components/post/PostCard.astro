@@ -1,9 +1,9 @@
 ---
 import { Image } from "astro:assets";
-const { post } = Astro.props;
+const { post, class: className } = Astro.props;
 ---
 
-<article>
+<article class:list={[className]}>
   <Image
     inferSize
     src={post.image}
@@ -14,10 +14,11 @@ const { post } = Astro.props;
   />
   <div class="content">
     <h2 class="title">
-      <a class="link" href={`/posts/${post.id}/`}>
+      <a class="link" href={`/posts/${post.slug}/`}>
         {post.title}
       </a>
     </h2>
+    <p class="excerpt">{post.excerpt}</p>
   </div>
 </article>
 
@@ -25,22 +26,25 @@ const { post } = Astro.props;
   @reference "@/styles/global.css";
 
   article {
-    @apply relative transition duration-250 ease-in;
+    @apply bg-background-alt relative flex h-full flex-col rounded-2xl p-4 transition duration-250 ease-in;
     &:hover {
-      @apply scale-105;
-      img {
-        @apply border-4 border-(--color-primary);
-      }
+      @apply scale-103;
     }
   }
   img {
-    @apply aspect-[16/9] rounded-2xl border-8 border-(--color-border)/30 object-cover;
+    @apply aspect-[16/9] w-full rounded-lg object-cover;
   }
   .content {
-    @apply mt-4;
+    @apply mt-4 flex flex-grow flex-col text-left;
+  }
+  .date {
+    @apply text-text/50 text-sm;
   }
   .title {
-    @apply text-text mt-3 px-2 text-2xl;
+    @apply text-text mt-1 text-left text-xl font-semibold;
+  }
+  .excerpt {
+    @apply text-text/80 mt-2 text-base;
   }
   .link {
     @apply after:absolute after:inset-0;

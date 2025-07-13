@@ -19,11 +19,11 @@ const { project } = Astro.props;
     </div>
   </div>
   <div class="p-6">
-    <h2 class="title">
+    <h3 class="title">
       <a class="link" href={`/projects/${project.id}`}>
         {project.title}
       </a>
-    </h2>
+    </h3>
     <p class="description">
       {project.description}
     </p>
@@ -43,7 +43,7 @@ const { project } = Astro.props;
     @apply aspect-[16/9] object-cover;
   }
   .title {
-    @apply text-2xl font-semibold;
+    @apply text-1xl font-semibold;
   }
   .description {
     @apply mt-3;

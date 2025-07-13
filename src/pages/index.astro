@@ -1,7 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import PostCard from "@/components/post/PostCard.astro";
 import ProjectCard from "@/components/projects/ProjectCard.astro";
+import PostsSection from "@/components/PostsSection.astro";
 
 const posts = [];
 const projects = [];
@@ -22,20 +22,7 @@ const projects = [];
           Explore my journey, tips, and tools for building apps that users love.
         </p>
       </div>
-      {
-        posts.length > 0 && (
-          <section class="mt-16">
-            <header class="flex gap-3 content-center items-center">
-              <h2 class="heading-secondary">Latest Posts</h2>
-            </header>
-            <div class="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
-              {posts.map((post) => (
-                <PostCard post={post} />
-              ))}
-            </div>
-          </section>
-        )
-      }
+      {posts.length > 0 && <PostsSection posts={posts} />}
       {
         projects.length > 0 && (
           <section class="mt-16">
