@@ -23,7 +23,7 @@ const { posts } = Astro.props;
     posts.length > 5 && (
       <div class="show-all-posts-container">
         <a href="/posts" class="show-all-posts-btn">
-          Ver todos los posts
+          See all posts
         </a>
       </div>
     )
@@ -32,9 +32,6 @@ const { posts } = Astro.props;
 
 <style>
   @reference "@/styles/global.css";
-  .heading-secondary {
-    @apply text-text text-left text-2xl font-semibold sm:text-3xl;
-  }
   .posts-grid {
     @apply mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3;
   }
