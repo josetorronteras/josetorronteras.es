@@ -6,6 +6,8 @@ const { class: className = "", ariaLabel = "Scroll to top" } = Astro.props;
   id="scroll-to-top"
   class={`${className} scroll-to-top icon-button hidden`}
   aria-label={ariaLabel}
+  aria-hidden="true"
+  tabindex="-1"
 >
   <svg
     class="w-6 h-6"
@@ -44,9 +46,15 @@ const { class: className = "", ariaLabel = "Scroll to top" } = Astro.props;
     // Show or hide the button based on scroll position
     function toggleScrollToTopButton() {
       if (window.scrollY > 300) {
+        // Show button: make it visible and accessible
         scrollToTopButton?.classList.remove("hidden");
+        scrollToTopButton?.setAttribute("aria-hidden", "false");
+        scrollToTopButton?.removeAttribute("tabindex");
       } else {
+        // Hide button: make it invisible and inaccessible
         scrollToTopButton?.classList.add("hidden");
+        scrollToTopButton?.setAttribute("aria-hidden", "true");
+        scrollToTopButton?.setAttribute("tabindex", "-1");
       }
     }
     // Scroll to top smoothly
