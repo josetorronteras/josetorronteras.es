@@ -10,7 +10,13 @@ const { project, class: className } = Astro.props;
       <div class="tech-icons">
         {project.techs.map((techImg) => {
           const TechIcon = TechIcons[techImg];
-          return TechIcon ? <TechIcon /> : null;
+          return (
+            TechIcon && (
+              <span aria-label={techImg}>
+                <TechIcon />
+              </span>
+            )
+          );
         })}
       </div>
     )
