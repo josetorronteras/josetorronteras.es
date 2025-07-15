@@ -37,7 +37,7 @@ html {
   .link {
     @apply text-primary hover:underline;
   }
-  span {
+  .highlight-text {
     @apply text-primary font-semibold;
   }
   .card-article {
