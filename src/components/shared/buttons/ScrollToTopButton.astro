@@ -28,7 +28,7 @@ const { class: className = "", ariaLabel = "Scroll to top" } = Astro.props;
   @reference "@/styles/global.css";
 
   .scroll-to-top {
-    @apply fixed right-6 bottom-6 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-(--color-primary) text-white shadow-lg;
+    @apply bg-primary fixed right-6 bottom-6 z-30 flex h-8 w-8 items-center justify-center rounded-full text-white shadow-lg;
 
     &.hidden {
       @apply pointer-events-none -translate-y-2 opacity-0;

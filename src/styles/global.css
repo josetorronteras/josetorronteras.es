@@ -31,4 +31,22 @@ html {
   .heading-secondary {
     @apply text-text/90 text-left text-2xl leading-snug font-semibold sm:text-3xl;
   }
+  .btn-primary {
+    @apply bg-primary hover:bg-primary/80 rounded-lg px-6 py-3 font-semibold text-white transition;
+  }
+  .link {
+    @apply text-primary hover:underline;
+  }
+  span {
+    @apply text-primary font-semibold;
+  }
+  .card-article {
+    @apply bg-background-alt relative flex h-full flex-col rounded-2xl p-4 transition duration-250 ease-in;
+    &:hover {
+      @apply scale-[1.03] transform;
+    }
+  }
+  .card-link {
+    @apply after:absolute after:inset-0;
+  }
 }

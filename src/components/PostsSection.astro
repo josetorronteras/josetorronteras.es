@@ -1,5 +1,6 @@
 ---
 import PostCard from "@/components/post/PostCard.astro";
+
 const { posts } = Astro.props;
 ---
 
@@ -22,7 +23,7 @@ const { posts } = Astro.props;
   {
     posts.length > 5 && (
       <div class="show-all-posts-container">
-        <a href="/posts" class="show-all-posts-btn">
+        <a href="/posts" class="btn-primary">
           See all posts
         </a>
       </div>
@@ -38,8 +39,5 @@ const { posts } = Astro.props;
   }
   .show-all-posts-container {
     @apply mt-8 flex justify-center;
-  }
-  .show-all-posts-btn {
-    @apply rounded-lg bg-(--color-primary) px-6 py-3 font-semibold text-white shadow transition hover:bg-(--color-primary)/80;
   }
 </style>
