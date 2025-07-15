@@ -1,7 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import ProjectCard from "@/components/projects/ProjectCard.astro";
 import PostsSection from "@/components/PostsSection.astro";
+import ProjectsSection from "@/components/ProjectsSection.astro";
 
 const posts = [];
 const projects = [];
@@ -23,20 +23,7 @@ const projects = [];
         </p>
       </div>
       {posts.length > 0 && <PostsSection posts={posts} />}
-      {
-        projects.length > 0 && (
-          <section class="mt-16">
-            <header>
-              <h2 class="heading-secondary">Latest Projects</h2>
-            </header>
-            <div class="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {projects.map((project) => (
-                <ProjectCard project={project} />
-              ))}
-            </div>
-          </section>
-        )
-      }
+      {projects.length > 0 && <ProjectsSection projects={projects} />}
     </div>
   </main>
 </Layout>

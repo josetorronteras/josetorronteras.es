@@ -1,0 +1,32 @@
+---
+import ProjectCard from "@/components/projects/ProjectCard.astro";
+const { projects } = Astro.props;
+---
+
+<section class="mt-16">
+  <header>
+    <h2 class="heading-secondary">Latest Projects</h2>
+  </header>
+  <div class="projects-grid">
+    {
+      projects
+        .slice(0, 6)
+        .map((project, index) => (
+          <ProjectCard
+            project={project}
+            class:list={[
+              index === 0 || index === 5 ? "sm:col-span-2" : "sm:col-span-1",
+            ]}
+          />
+        ))
+    }
+  </div>
+</section>
+
+<style>
+  @reference "@/styles/global.css";
+
+  .projects-grid {
+    @apply mt-8 grid grid-cols-1 gap-4 sm:grid-cols-4;
+  }
+</style>

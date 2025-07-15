@@ -4,7 +4,7 @@ const { posts } = Astro.props;
 ---
 
 <section class="mt-16">
-  <header class="flex gap-3 content-center items-center">
+  <header>
     <h2 class="heading-secondary">Latest Posts</h2>
   </header>
   <div class="posts-grid">
@@ -32,6 +32,7 @@ const { posts } = Astro.props;
 
 <style>
   @reference "@/styles/global.css";
+
   .posts-grid {
     @apply mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3;
   }
