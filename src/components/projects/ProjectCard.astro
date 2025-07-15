@@ -1,5 +1,6 @@
 ---
 const { project, class: className } = Astro.props;
+
 import { TechIcons } from "@/components/shared/icons/techs/TechIcons.ts";
 ---
 
@@ -9,7 +10,13 @@ import { TechIcons } from "@/components/shared/icons/techs/TechIcons.ts";
       <div class="tech-icons">
         {project.techs.map((techImg) => {
           const TechIcon = TechIcons[techImg];
-          return TechIcon ? <TechIcon /> : null;
+          return (
+            TechIcon && (
+              <span aria-label={techImg}>
+                <TechIcon />
+              </span>
+            )
+          );
         })}
       </div>
     )
