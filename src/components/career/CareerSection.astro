@@ -1,0 +1,37 @@
+---
+import CareerSectionItem from "@components/career/CareerSectionItem.astro";
+import BriefIcon from "@components/shared/icons/BriefIcon.astro";
+import { careers } from "@data/content/careers";
+---
+
+<article class="career-timeline">
+  <ol class="timeline-list">
+    {
+      careers.map((career) => (
+        <li class="timeline-item">
+          <span class="timeline-icon">
+            <BriefIcon class="h-3" />
+          </span>
+          <CareerSectionItem career={career} />
+        </li>
+      ))
+    }
+  </ol>
+</article>
+
+<style>
+  @reference "@styles/global.css";
+
+  .career-timeline {
+    @apply flex flex-col gap-8;
+  }
+  .timeline-list {
+    @apply border-border/30 relative ml-4 border-l-2;
+  }
+  .timeline-item {
+    @apply mb-12 ml-10;
+  }
+  .timeline-icon {
+    @apply ring-border bg-background-alt absolute -left-[9px] flex h-8 w-8 items-center justify-center rounded-full ring-4;
+  }
+</style>

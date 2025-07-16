@@ -1,0 +1,84 @@
+---
+import { Image } from "astro:assets";
+import Badge from "@components/shared/Badge.astro";
+import Link from "@components/shared/Link.astro";
+
+const { career } = Astro.props;
+---
+
+<div class="career-item">
+  <h3 class="career-role">
+    {career.rol}
+    {career.current && <Badge text="Current" />}
+  </h3>
+  <div class="company-links">
+    {
+      career.companies.map((company) => (
+        <Link href={company.link} label={company.name} />
+      ))
+    }
+  </div>
+  <div class="career-duration">
+    <time>{career.startDate}</time> - <time>{career.endDate}</time>
+  </div>
+  <a href={career.app.link} target="_blank" class="career-card">
+    <div class="career-icon">
+      {
+        career.app.img ? (
+          <Image
+            inferSize
+            src={career.app.img}
+            alt={career.app.name}
+            width={56}
+            height={56}
+            class:list={["rounded-xl"]}
+          />
+        ) : (
+          <div class="icon-placeholder" />
+        )
+      }
+    </div>
+    <div class="career-details">
+      <h4 class="career-name">{career.app.name}</h4>
+      <p class="career-description">{career.app.description}</p>
+    </div>
+  </a>
+</div>
+
+<style>
+  @reference "@styles/global.css";
+
+  .career-item {
+    @apply flex flex-col gap-2;
+  }
+  .career-role {
+    @apply text-text flex flex-row items-center gap-2 text-xl font-bold;
+  }
+  .company-links {
+    @apply flex flex-row flex-wrap gap-2;
+  }
+  .career-duration {
+    @apply text-text/70 text-sm font-normal;
+  }
+  .career-card {
+    @apply bg-background-alt mt-3 flex max-w-2xl flex-col gap-4 rounded-lg p-4 transition-transform hover:scale-[1.01] sm:flex-row sm:items-center;
+    &:hover {
+      @apply border-primary;
+    }
+  }
+  .career-icon {
+    @apply flex-shrink-0;
+  }
+  .icon-placeholder {
+    @apply text-primary flex h-14 w-14 items-center justify-center rounded-xl bg-gray-700/50;
+  }
+  .career-details {
+    @apply flex flex-col;
+  }
+  .career-name {
+    @apply text-text text-lg font-medium;
+  }
+  .career-description {
+    @apply text-text/70 mt-1 text-sm leading-relaxed;
+  }
+</style>

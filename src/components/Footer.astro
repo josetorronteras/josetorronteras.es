@@ -1,12 +1,14 @@
 ---
-import SocialLinks from "@components/header/SocialLinks.astro";
+import SocialLinks from "@components/shared/SocialLinks.astro";
+import Link from "@components/shared/Link.astro";
 ---
 
 <footer>
   <p class="mt-4 text-sm text-gray-500">
-    Follow me on <a href="https://github.com/josetorronteras" class="link"
-      >Github</a
-    > for updates and insights.
+    Follow me on <Link
+      href="https://github.com/josetorronteras"
+      label="GitHub"
+    /> for updates and insights.
   </p>
   <SocialLinks class="mt-4 justify-center" />
 </footer>

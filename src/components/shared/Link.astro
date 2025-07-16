@@ -1,0 +1,18 @@
+---
+const { href, label, underline = false } = Astro.props;
+---
+
+<a href={href} target="_blank" class={`link ${underline ? "underline" : ""}`}
+  >{label}</a
+>
+
+<style>
+  @reference "@styles/global.css";
+
+  .link {
+    @apply text-primary hover:underline;
+  }
+  .underline {
+    @apply decoration-primary underline-offset-4;
+  }
+</style>
