@@ -1,5 +1,5 @@
 ---
-import { TechIcons } from "@/components/shared/icons/techs/TechIcons.ts";
+import { TechIcons } from "@icons/techs/TechIcons.ts";
 
 const { project, class: className } = Astro.props;
 ---
@@ -32,7 +32,7 @@ const { project, class: className } = Astro.props;
 </article>
 
 <style>
-  @reference "@/styles/global.css";
+  @reference "@styles/global.css";
 
   .tech-icons {
     @apply mb-2 flex grow gap-2 pb-2;

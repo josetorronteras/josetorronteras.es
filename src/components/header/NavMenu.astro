@@ -1,7 +1,7 @@
 ---
 import NavLinks from "./NavLinks.astro";
-import MobileMenu from "@/components/header/MobileMenu.astro";
-import HamburgerIconButton from "@/components/shared/buttons/HamburgerIconButton.astro";
+import MobileMenu from "@components/header/MobileMenu.astro";
+import HamburgerIconButton from "@components/shared/buttons/HamburgerIconButton.astro";
 
 const { pathname } = Astro.url;
 const activePath = pathname === "/" ? "/" : pathname.replace(/\/$/, "");

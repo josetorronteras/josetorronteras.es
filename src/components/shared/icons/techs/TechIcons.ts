@@ -1,4 +1,4 @@
-// import SwiftIcon from "@/components/shared/icons/techs/SwiftIcon.astro";
+// import SwiftIcon from "@icons/techs/SwiftIcon.astro";
 
 export const TechIcons = {
   // swift: SwiftIcon,
