@@ -1,9 +1,10 @@
 ---
 import { Image } from "astro:assets";
+
 const { post, class: className } = Astro.props;
 ---
 
-<article class:list={[className]}>
+<article class:list={[className, "card-article"]}>
   <Image
     inferSize
     src={post.image}
@@ -14,7 +15,7 @@ const { post, class: className } = Astro.props;
   />
   <div class="content">
     <h2 class="title">
-      <a class="link" href={`/posts/${post.slug}/`}>
+      <a class="card-link" href={`/posts/${post.slug}/`}>
         {post.title}
       </a>
     </h2>
@@ -25,12 +26,6 @@ const { post, class: className } = Astro.props;
 <style>
   @reference "@/styles/global.css";
 
-  article {
-    @apply bg-background-alt relative flex h-full flex-col rounded-2xl p-4 transition duration-250 ease-in;
-    &:hover {
-      @apply scale-[1.03] transform;
-    }
-  }
   img {
     @apply aspect-[16/9] w-full rounded-lg object-cover;
   }
@@ -42,8 +37,5 @@ const { post, class: className } = Astro.props;
   }
   .excerpt {
     @apply text-text/80 mt-2 text-base;
-  }
-  .link {
-    @apply after:absolute after:inset-0;
   }
 </style>

@@ -1,10 +1,10 @@
 ---
-const { project, class: className } = Astro.props;
-
 import { TechIcons } from "@/components/shared/icons/techs/TechIcons.ts";
+
+const { project, class: className } = Astro.props;
 ---
 
-<article class:list={[className]}>
+<article class:list={[className, "card-article"]}>
   {
     project.techs && project.techs.length > 0 && (
       <div class="tech-icons">
@@ -23,7 +23,7 @@ import { TechIcons } from "@/components/shared/icons/techs/TechIcons.ts";
   }
   <div class="content">
     <h2 class="title">
-      <a href={`/projects/${project.slug}`}>
+      <a class="card-link" href={`/projects/${project.slug}`}>
         {project.title}
       </a>
     </h2>
@@ -34,9 +34,6 @@ import { TechIcons } from "@/components/shared/icons/techs/TechIcons.ts";
 <style>
   @reference "@/styles/global.css";
 
-  article {
-    @apply bg-background-alt flex h-full flex-col rounded-2xl p-4 transition duration-250 ease-in hover:scale-[1.03];
-  }
   .tech-icons {
     @apply mb-2 flex grow gap-2 pb-2;
   }
