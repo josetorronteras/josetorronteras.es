@@ -1,5 +1,5 @@
 ---
-import PostCard from "@/components/post/PostCard.astro";
+import PostCard from "@components/post/PostCard.astro";
 
 const { posts } = Astro.props;
 ---
@@ -32,7 +32,7 @@ const { posts } = Astro.props;
 </section>
 
 <style>
-  @reference "@/styles/global.css";
+  @reference "@styles/global.css";
 
   .posts-grid {
     @apply mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3;

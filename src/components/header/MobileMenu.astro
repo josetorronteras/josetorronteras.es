@@ -3,7 +3,7 @@ import NavLinks from "@components/header/NavLinks.astro";
 import CloseIconButton from "@components/shared/buttons/CloseIconButton.astro";
 import SocialLinks from "@components/header/SocialLinks.astro";
 
-const { class: className, activePath } = Astro.props;
+const { activePath, class: className } = Astro.props;
 ---
 
 <div id="mobile-menu" class={`${className} mobile-menu`}>
@@ -19,7 +19,7 @@ const { class: className, activePath } = Astro.props;
 </div>
 
 <style>
-  @reference "@/styles/global.css";
+  @reference "@styles/global.css";
 
   .mobile-menu {
     @apply bg-background fixed inset-0 z-50 flex flex-col items-center justify-center transition duration-200 ease-in-out md:hidden;
