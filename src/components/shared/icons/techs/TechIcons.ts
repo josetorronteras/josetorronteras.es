@@ -1,5 +1,5 @@
 // import SwiftIcon from "@icons/techs/SwiftIcon.astro";
 
-export const TechIcons = {
+export const techIcons = {
   // swift: SwiftIcon,
 };

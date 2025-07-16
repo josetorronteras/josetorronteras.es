@@ -1,5 +1,5 @@
 ---
-import { TechIcons } from "@icons/techs/TechIcons";
+import { techIcons } from "@icons/techs/TechIcons";
 
 const { project, class: className } = Astro.props;
 ---
@@ -9,7 +9,7 @@ const { project, class: className } = Astro.props;
     project.techs && project.techs.length > 0 && (
       <div class="tech-icons">
         {project.techs.map((techImg) => {
-          const TechIcon = TechIcons[techImg];
+          const TechIcon = techIcons[techImg];
           return (
             TechIcon && (
               <span aria-label={techImg}>

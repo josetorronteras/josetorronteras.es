@@ -2,8 +2,8 @@
 import Layout from "@layouts/Layout.astro";
 import PostsSection from "@components/PostsSection.astro";
 import ProjectsSection from "@components/ProjectsSection.astro";
-import { Posts } from "@data/content/Posts";
-import { Projects } from "@data/content/Projects";
+import { posts } from "@data/content/Posts";
+import { projects } from "@data/content/Projects";
 ---
 
 <Layout>
@@ -23,8 +23,8 @@ import { Projects } from "@data/content/Projects";
           building apps that users love.
         </p>
       </div>
-      {Posts.length > 0 && <PostsSection posts={Posts} />}
-      {Projects.length > 0 && <ProjectsSection projects={Projects} />}
+      {posts.length > 0 && <PostsSection posts={posts} />}
+      {projects.length > 0 && <ProjectsSection projects={projects} />}
     </div>
   </main>
 </Layout>

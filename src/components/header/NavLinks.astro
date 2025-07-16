@@ -1,12 +1,12 @@
 ---
-import { Routes } from "@data/content/Routes";
+import { routes } from "@data/content/Routes";
 
 const { activePath, class: className } = Astro.props;
 ---
 
 <ul class={`${className} md:gap-6 gap-8 text-center`}>
   {
-    Routes.map((route) => (
+    routes.map((route) => (
       <li>
         <a
           href={route.href}
