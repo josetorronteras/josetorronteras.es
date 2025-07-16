@@ -1,7 +1,7 @@
 ---
-import { Image } from "astro:assets";
 import SocialLinks from "@components/shared/SocialLinks.astro";
-import { presentation } from "@data/content/presentation";
+import { Image } from "astro:assets";
+import { presentation } from "@data/content/Presentation";
 ---
 
 <section>
@@ -20,7 +20,7 @@ import { presentation } from "@data/content/presentation";
             class="profile-image"
           />
         ) : (
-          <div class="profile-image bg-border"></div>
+          <div class="profile-image bg-border" />
         )
       }
     </aside>

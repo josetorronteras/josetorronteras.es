@@ -1,6 +1,6 @@
 /**
  * Represents a career entry, including role, companies, dates, and related app.
- * @property {string} rol - The role or position held.
+ * @property {string} role - The role or position held.
  * @property {Company[]} companies - The list of companies associated with this career entry.
  * @property {string} startDate - The start date of the career period (ISO format).
  * @property {string} endDate - The end date of the career period (ISO format).
@@ -8,7 +8,7 @@
  * @property {App} app - The application or project related to this career entry.
  */
 export type Career = {
-  rol: string;
+  role: string;
   companies: Company[];
   startDate: string;
   endDate: string;
