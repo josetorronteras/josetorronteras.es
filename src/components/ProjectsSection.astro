@@ -14,11 +14,11 @@ const { projects } = Astro.props;
         .slice(0, 6)
         .map((project, index) => (
           <ProjectCard
+            project={project}
             class:list={[
               index === 0 || index === 5 ? "sm:col-span-2" : "sm:col-span-1",
             ]}
             key={project.slug}
-            project={project}
           />
         ))
     }

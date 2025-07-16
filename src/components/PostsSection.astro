@@ -14,8 +14,8 @@ const { posts } = Astro.props;
         .slice(0, 5)
         .map((post, index) => (
           <PostCard
-            class:list={[index === 0 ? "sm:col-span-2" : ""]}
             post={post}
+            class:list={[index === 0 ? "sm:col-span-2" : ""]}
           />
         ))
     }

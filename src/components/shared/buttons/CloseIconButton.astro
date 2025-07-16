@@ -1,5 +1,5 @@
 ---
-const { class: className, id, ariaLabel } = Astro.props;
+const { id, ariaLabel, class: className } = Astro.props;
 ---
 
 <button id={id} class={`${className} icon-button`} aria-label={ariaLabel}>

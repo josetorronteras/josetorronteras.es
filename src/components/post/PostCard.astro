@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 
-const { class: className, post } = Astro.props;
+const { post, class: className } = Astro.props;
 ---
 
 <article class:list={[className, "card-article"]}>
