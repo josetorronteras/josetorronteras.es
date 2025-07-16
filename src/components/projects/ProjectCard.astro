@@ -1,49 +1,54 @@
 ---
-import { techIcons } from "@icons/techs/TechIcons";
-
-const { project, class: className } = Astro.props;
+import { Image } from "astro:assets";
+const { project } = Astro.props;
 ---
 
-<article class:list={[className, "card-article"]}>
-  {
-    project.techs && project.techs.length > 0 && (
-      <div class="tech-icons">
-        {project.techs.map((techImg) => {
-          const TechIcon = techIcons[techImg];
-          return (
-            TechIcon && (
-              <span aria-label={techImg}>
-                <TechIcon />
-              </span>
-            )
-          );
-        })}
-      </div>
-    )
-  }
-  <div class="content">
+<article>
+  <div class="relative">
+    <Image
+      inferSize
+      src={project.image}
+      alt={project.imageAlt}
+      widths={[200, 400, 600, 1000, 1400]}
+      sizes="100vw"
+      loading="lazy"
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-gray-800/70 to-transparent"
+    >
+    </div>
+  </div>
+  <div class="p-6">
     <h2 class="title">
-      <a class="card-link" href={`/projects/${project.slug}`}>
+      <a class="link" href={`/projects/${project.id}`}>
         {project.title}
       </a>
     </h2>
-    <p class="description">{project.description}</p>
+    <p class="description">
+      {project.description}
+    </p>
   </div>
 </article>
 
 <style>
-  @reference "@styles/global.css";
+  @reference "@/styles/global.css";
 
-  .tech-icons {
-    @apply mb-2 flex grow gap-2 pb-2;
+  article {
+    @apply relative transform overflow-hidden rounded-lg border-4 border-(--color-border)/30 bg-(--color-background-alt) transition-transform hover:scale-105 hover:shadow-xl;
+    &:hover {
+      @apply scale-105 border-(--color-primary);
+    }
   }
-  .content {
-    @apply flex flex-grow flex-col place-content-center items-start;
+  img {
+    @apply aspect-[16/9] object-cover;
   }
   .title {
-    @apply text-text mb-1 text-left text-lg font-semibold;
+    @apply text-2xl font-semibold;
   }
   .description {
-    @apply text-text/80 text-left text-sm;
+    @apply mt-3;
+  }
+  .link {
+    @apply relative after:absolute after:inset-0 after:content-[''];
   }
 </style>

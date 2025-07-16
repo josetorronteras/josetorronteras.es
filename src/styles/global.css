@@ -49,4 +49,10 @@ html {
   .card-link {
     @apply after:absolute after:inset-0;
   }
+  .paragraph {
+    @apply text-lg leading-relaxed;
+  }
+  .paragraph-content {
+    @apply text-text/90 space-y-6;
+  }
 }

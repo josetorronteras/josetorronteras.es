@@ -1,0 +1,49 @@
+---
+import SocialLinks from "@components/shared/SocialLinks.astro";
+import { Image } from "astro:assets";
+import { presentation } from "@data/content/Presentation";
+---
+
+<section>
+  <h1 class="heading-primary">
+    Hi, I'm {presentation.name}. <br />
+    {presentation.title}.
+  </h1>
+  <div class="flex flex-col md:flex-row gap-12 mt-5 sm:mt-10">
+    <aside class="min-w-[180px] lg:max-w-[260px] order-1 md:order-2">
+      {
+        presentation.avatar ? (
+          <Image
+            inferSize
+            src={presentation.avatar}
+            alt={presentation.name}
+            class="profile-image"
+          />
+        ) : (
+          <div class="profile-image bg-border" />
+        )
+      }
+    </aside>
+    <div class="max-w-[700px] order-2 md:order-1">
+      <div class="paragraph-content">
+        {
+          presentation.paragraphs.map((paragraph) => (
+            <p class="paragraph">{paragraph}</p>
+          ))
+        }
+        <SocialLinks />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @reference "@styles/global.css";
+
+  .heading-primary {
+    @apply text-text text-4xl leading-tight font-bold sm:text-5xl lg:text-6xl;
+  }
+  .profile-image {
+    @apply border-border aspect-square size-60 rounded-2xl border-1 sm:size-auto;
+  }
+</style>

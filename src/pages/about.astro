@@ -1,0 +1,19 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Presentation from "@components/about/Presentation.astro";
+import CareerSection from "@components/career/CareerSection.astro";
+---
+
+<Layout>
+  <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
+    <div class="max-w-[1008px] mx-auto">
+      <Presentation />
+      <section class="mt-16">
+        <h2 class="heading-secondary">My Professional Journey</h2>
+        <div class="mt-8">
+          <CareerSection />
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>
