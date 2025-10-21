@@ -10,11 +10,11 @@ on:
     branches: [main]
 
 jobs:
-  ci:
+  setup-and-build:
     runs-on: ubuntu-latest
-    name: CI for Astro site
+    name: Setup and Build
     steps:
-      - name: Checkout your repository using git
+      - name: Checkout repository
         uses: actions/checkout@v5
       - name: Set up Node.js
         uses: actions/setup-node@v5
@@ -34,12 +34,30 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm install
-      - name: Check astro for errors
-        run: npm run check
       - name: Build site
         run: npm run build
-      - name: Add .lycheeignore
-        run: cp .lycheeignore ./dist/.lycheeignore
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: |
+            dist
+            node_modules
+            .lycheeignore
+
+  check:
+    needs: setup-and-build
+    runs-on: ubuntu-latest
+    name: Run Checks
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+      - name: Check astro for errors
+        run: npm run check
       - name: Link Checker
         uses: lycheeverse/lychee-action@v2
         with:
@@ -47,3 +65,27 @@ jobs:
           fail: true
           failIfEmpty: false
           workingDirectory: "./dist"
+
+  format:
+    needs: setup-and-build
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    name: Format Code
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: node_modules
+      - name: Prettier write
+        run: npm run format
+      - name: Commit formatted code
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "fix: apply prettier formatting"
+          branch: ${{ github.ref_name }}
+          file_pattern: "."
