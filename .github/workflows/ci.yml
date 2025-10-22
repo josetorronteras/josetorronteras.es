@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: "latest"
+          node-version: 'latest'
       - name: Cache node_modules
         id: cache-node-modules
         uses: actions/cache@v4
@@ -45,7 +45,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: "latest"
+          node-version: 'latest'
       - name: Restore node_modules
         uses: actions/cache/restore@v4
         with:
@@ -57,7 +57,7 @@ jobs:
       - name: Commit formatted code
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          commit_message: "fix: apply prettier formatting"
+          commit_message: 'fix: apply prettier formatting'
 
   build:
     needs: [install, format]
@@ -72,7 +72,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: "latest"
+          node-version: 'latest'
       - name: Restore node_modules
         uses: actions/cache/restore@v4
         with:
@@ -89,4 +89,4 @@ jobs:
           args: --verbose --no-progress './**/*.md' './**/*.html' '.lycheeignore'
           fail: true
           failIfEmpty: false
-          workingDirectory: "./dist"
+          workingDirectory: './dist'

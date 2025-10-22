@@ -1,14 +1,14 @@
 version: 2
 updates:
   # Enable version updates for github-actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "sunday"
-      time: "22:00"
+      interval: 'weekly'
+      day: 'sunday'
+      time: '22:00'
     commit-message:
-      prefix: "deps"
+      prefix: 'deps'
     labels:
       - dependencies
       - ci
@@ -16,20 +16,20 @@ updates:
     groups:
       all-actions:
         patterns:
-          - "*"
+          - '*'
     ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-patch"]
+      - dependency-name: '*'
+        update-types: ['version-update:semver-patch']
 
   # Enable version updates for Docker
-  - package-ecosystem: "docker"
-    directory: "/"
+  - package-ecosystem: 'docker'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "sunday"
-      time: "22:00"
+      interval: 'weekly'
+      day: 'sunday'
+      time: '22:00'
     commit-message:
-      prefix: "deps"
+      prefix: 'deps'
     labels:
       - dependencies
       - docker
@@ -37,21 +37,21 @@ updates:
     groups:
       all-docker:
         patterns:
-          - "*"
+          - '*'
     ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-patch"]
+      - dependency-name: '*'
+        update-types: ['version-update:semver-patch']
 
   # Enable version updates for npm
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "sunday"
-      time: "22:00"
-    versioning-strategy: "increase"
+      interval: 'weekly'
+      day: 'sunday'
+      time: '22:00'
+    versioning-strategy: 'increase'
     commit-message:
-      prefix: "deps"
+      prefix: 'deps'
     labels:
       - dependencies
       - frontend
@@ -59,7 +59,7 @@ updates:
     groups:
       all-npm:
         patterns:
-          - "*"
+          - '*'
     ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-patch"]
+      - dependency-name: '*'
+        update-types: ['version-update:semver-patch']

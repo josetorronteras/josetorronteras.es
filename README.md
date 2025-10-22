@@ -25,7 +25,7 @@ The site will be available at `http://localhost:4321`
 
 ## 📦 Available Commands
 
-| Command | DescrDescriptionipción |
+| Command | Description |
 |---------|-------------|
 | `docker compose up` | Starts the development environment |
 | `docker compose run --rm app npm run <script>` | Runs any npm script inside the container (e.g. dev, build, check) |
