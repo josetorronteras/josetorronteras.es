@@ -1,7 +1,12 @@
 ---
 import PostCard from "@components/post/PostCard.astro";
+import type { Post } from "@/data/types/Post";
 
 const { posts } = Astro.props;
+
+interface Props {
+  posts: Post[];
+}
 ---
 
 <section class="mt-16">
