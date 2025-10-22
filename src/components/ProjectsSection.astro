@@ -1,5 +1,10 @@
 ---
 import ProjectCard from "@components/projects/ProjectCard.astro";
+import type { Project } from "@/data/types/Project";
+
+interface Props {
+  projects: Project[];
+}
 
 const { projects } = Astro.props;
 ---

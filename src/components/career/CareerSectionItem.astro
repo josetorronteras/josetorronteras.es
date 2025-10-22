@@ -2,13 +2,18 @@
 import Badge from "@components/shared/Badge.astro";
 import Link from "@components/shared/Link.astro";
 import { Image } from "astro:assets";
+import type { Career } from "@/data/types/Career";
+
+interface Props {
+  career: Career;
+}
 
 const { career } = Astro.props;
 ---
 
 <div class="career-item">
   <h3 class="career-role">
-    {career.rol}
+    {career.role}
     {career.current && <Badge text="Current" />}
   </h3>
   <div class="company-links">

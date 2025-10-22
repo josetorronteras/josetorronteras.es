@@ -10,30 +10,75 @@ on:
     branches: [main]
 
 jobs:
-  ci:
+  install:
     runs-on: ubuntu-latest
-    name: CI for Astro site
+    name: Install Dependencies
     steps:
-      - name: Checkout your repository using git
+      - name: Checkout repository
         uses: actions/checkout@v5
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: "latest"
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
-        shell: bash
-      - name: Cache npm modules
+          node-version: 'latest'
+      - name: Cache node_modules
+        id: cache-node-modules
         uses: actions/cache@v4
-        id: npm-cache
         with:
-          path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        run: npm install
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+  format:
+    needs: [install]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    name: Format Code
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 'latest'
+      - name: Restore node_modules
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          fail-on-cache-miss: true
+      - name: Prettier write
+        run: npm run format
+      - name: Commit formatted code
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: 'fix: apply prettier formatting'
+
+  build:
+    needs: [install, format]
+    if: always() && needs.install.result == 'success' && (needs.format.result == 'success' || needs.format.result == 'skipped')
+    runs-on: ubuntu-latest
+    name: Build project
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 'latest'
+      - name: Restore node_modules
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          fail-on-cache-miss: true
       - name: Check astro for errors
         run: npm run check
       - name: Build site
@@ -46,4 +91,4 @@ jobs:
           args: --verbose --no-progress './**/*.md' './**/*.html'
           fail: true
           failIfEmpty: false
-          workingDirectory: "./dist"
+          workingDirectory: './dist'

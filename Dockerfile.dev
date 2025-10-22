@@ -1,0 +1,17 @@
+# Dockerfile.dev - Development configuration
+FROM node:lts-alpine
+
+# Install git and other required dependencies
+RUN apk add --no-cache git
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files and install dependencies only if package.json or package-lock.json change
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Expose Astro development port
+EXPOSE 4321
