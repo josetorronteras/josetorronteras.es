@@ -40,6 +40,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref }}
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
@@ -56,8 +58,6 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "fix: apply prettier formatting"
-          branch: ${{ github.head_ref }}
-          file_pattern: "."
 
   build:
     needs: [install, format]
