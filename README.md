@@ -11,12 +11,14 @@
 ## 🚀 Local Development
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/josetorronteras/josetorronteras.es.git
 cd josetorronteras.es
 ```
 
 2. Start the development environment with Docker:
+
 ```bash
 docker compose up
 ```
@@ -25,16 +27,15 @@ The site will be available at `http://localhost:4321`
 
 ## 📦 Available Commands
 
-| Command | Description |
-|---------|-------------|
-| `docker compose up` | Starts the development environment |
+| Command                                        | Description                                                       |
+| ---------------------------------------------- | ----------------------------------------------------------------- |
+| `docker compose up`                            | Starts the development environment                                |
 | `docker compose run --rm app npm run <script>` | Runs any npm script inside the container (e.g. dev, build, check) |
-| `npm run dev` | Starts the development server |
-| `npm run build` | Builds the site for production |
-| `npm run preview` | Previews the local production build |
-| `npm run check` | Runs type checks |
-| `npm run format` | Formats code using Prettier |
-
+| `npm run dev`                                  | Starts the development server                                     |
+| `npm run build`                                | Builds the site for production                                    |
+| `npm run preview`                              | Previews the local production build                               |
+| `npm run check`                                | Runs type checks                                                  |
+| `npm run format`                               | Formats code using Prettier                                       |
 
 ## 📝 Licencia
 
