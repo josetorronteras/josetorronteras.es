@@ -17,6 +17,12 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v5
+      - name: Clone private content repository
+        uses: actions/checkout@v5
+        with:
+          repository: josetorronteras/josetorrontera.es-content
+          token: ${{ secrets.PAT }}
+          path: src/data/content
       - name: Install and build site
         uses: withastro/action@v4
         with:

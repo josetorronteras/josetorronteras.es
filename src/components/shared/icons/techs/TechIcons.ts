@@ -1,5 +1,7 @@
-// import SwiftIcon from "@icons/techs/SwiftIcon.astro";
+import SwiftIcon from "@icons/techs/SwiftIcon.astro";
+import PythonIcon from "@icons/techs/PythonIcon.astro";
 
 export const techIcons = {
-  // swift: SwiftIcon,
+  swift: SwiftIcon,
+  python: PythonIcon,
 };

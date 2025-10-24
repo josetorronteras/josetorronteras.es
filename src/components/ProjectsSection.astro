@@ -16,14 +16,13 @@ const { projects } = Astro.props;
   <div class="projects-grid">
     {
       projects
-        .slice(0, 6)
-        .map((project, index) => (
+        .slice(0, 8)
+        .map((project: Project, index: number) => (
           <ProjectCard
             project={project}
             class:list={[
               index === 0 || index === 5 ? "sm:col-span-2" : "sm:col-span-1",
             ]}
-            key={project.slug}
           />
         ))
     }
@@ -34,6 +33,6 @@ const { projects } = Astro.props;
   @reference "@styles/global.css";
 
   .projects-grid {
-    @apply mt-8 grid grid-cols-1 gap-4 sm:grid-cols-4;
+    @apply mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4;
   }
 </style>
