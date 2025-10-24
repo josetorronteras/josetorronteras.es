@@ -20,7 +20,7 @@ jobs:
       - name: Clone private content repository
         uses: actions/checkout@v5
         with:
-          repository: josetorronteras/josetorrontera.es-content
+          repository: josetorronteras/josetorronteras.es-content
           token: ${{ secrets.PAT }}
           path: src/data/content
       - name: Install and build site
