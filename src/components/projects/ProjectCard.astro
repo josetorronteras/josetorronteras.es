@@ -1,54 +1,48 @@
 ---
-import { Image } from "astro:assets";
+import GithubIcon from "@components/shared/icons/social/GithubIcon.astro";
+import { techIcons } from "@components/shared/icons/techs/TechIcons";
+import type { Project } from "@data/types/Project";
+
+interface Props {
+  project: Project;
+}
+
 const { project } = Astro.props;
+const Icon = techIcons[project.icon];
 ---
 
-<article>
-  <div class="relative">
-    <Image
-      inferSize
-      src={project.image}
-      alt={project.imageAlt}
-      widths={[200, 400, 600, 1000, 1400]}
-      sizes="100vw"
-      loading="lazy"
-    />
-    <div
-      class="absolute inset-0 bg-gradient-to-t from-gray-800/70 to-transparent"
-    >
-    </div>
+<article class="card-article post-article">
+  <div class="flex items-center justify-between">
+    {Icon ? <Icon /> : null}
+    <GithubIcon class="w-5 fill-slate-400" />
   </div>
-  <div class="p-6">
-    <h2 class="title">
-      <a class="link" href={`/projects/${project.id}`}>
-        {project.title}
-      </a>
-    </h2>
-    <p class="description">
-      {project.description}
-    </p>
+  <a class="card-link title" href={`${project.githubUrl}`} target="_blank">
+    {project.title}
+  </a>
+  <p class="description">
+    {project.description}
+  </p>
+  <div class="techs paragraph-content">
+    <span>{project.techs}</span>
   </div>
 </article>
 
 <style>
   @reference "@/styles/global.css";
 
-  article {
-    @apply relative transform overflow-hidden rounded-lg border-4 border-(--color-border)/30 bg-(--color-background-alt) transition-transform hover:scale-105 hover:shadow-xl;
+  .post-article {
+    @apply border-border/30 space-y-4 rounded-lg border-2 p-6;
     &:hover {
-      @apply scale-105 border-(--color-primary);
+      @apply border-primary shadow-lg;
     }
   }
-  img {
-    @apply aspect-[16/9] object-cover;
-  }
   .title {
-    @apply text-2xl font-semibold;
+    @apply mb-2 text-left text-xl font-bold text-white capitalize sm:mt-2 sm:mb-4 sm:line-clamp-2 md:min-h-14;
   }
   .description {
-    @apply mt-3;
+    @apply line-clamp-5 text-left text-sm text-slate-400;
   }
-  .link {
-    @apply relative after:absolute after:inset-0 after:content-[''];
+  .techs {
+    @apply line-clamp-1 text-left text-xs font-medium;
   }
 </style>
