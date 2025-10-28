@@ -80,7 +80,6 @@ jobs:
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
           fail-on-cache-miss: true
       - name: Clone private content repository
-        if: github.event.pull_request.user.login != 'app/dependabot'
         uses: actions/checkout@v5
         with:
           repository: josetorronteras/josetorronteras.es-content
