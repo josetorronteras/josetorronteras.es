@@ -15,7 +15,7 @@ jobs:
     name: Install Dependencies
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
@@ -39,7 +39,7 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.head_ref }}
       - name: Set up Node.js
@@ -66,7 +66,7 @@ jobs:
     name: Build project
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
       - name: Set up Node.js
@@ -81,7 +81,7 @@ jobs:
           fail-on-cache-miss: true
       - name: Clone private content repository
         if: github.event.pull_request.user.login != 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == github.repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: josetorronteras/josetorronteras.es-content
           token: ${{ secrets.PAT }}
