@@ -44,7 +44,7 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
             post.data.tags.length > 0 && (
               <div class="hero-tags">
                 {post.data.tags.map((tag: string) => (
-                  <a href={`/tags/${tag.toLowerCase()}`} class="hero-tag">
+                  <a href={`/tags/${encodeURIComponent(tag.toLowerCase())}`} class="hero-tag">
                     {tag}
                   </a>
                 ))}
