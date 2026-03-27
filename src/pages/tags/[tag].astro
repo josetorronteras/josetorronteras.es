@@ -1,0 +1,135 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("posts");
+  const allTags = [...new Set(entries.flatMap((post) => post.data.tags || []))];
+
+  return allTags.map((tag) => ({
+    params: { tag: tag.toLowerCase() },
+    props: {
+      tag,
+      posts: entries
+        .filter((post) => post.data.tags?.includes(tag))
+        .map((entry) => ({ ...entry.data, slug: entry.id }))
+        .sort((a, b) => b.date.getTime() - a.date.getTime()),
+    },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<Layout title={`${tag}`} description={`Artículos sobre ${tag}`}>
+  <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
+    <div class="max-w-[1100px] mx-auto">
+
+      <a href="/posts" class="back-link">&larr; Blog</a>
+
+      <header class="header">
+        <span class="eyebrow">Tag</span>
+        <h1 class="title">{tag}</h1>
+        <p class="count">
+          {posts.length} {posts.length === 1 ? "artículo" : "artículos"}
+        </p>
+      </header>
+
+      <ul class="post-list">
+        {posts.map((post) => (
+          <li>
+            <a href={`/posts/${post.slug}/`} class="post-row">
+              <div class="post-row-img-wrap">
+                <Image
+                  inferSize
+                  src={post.image}
+                  alt={post.imageAlt}
+                  widths={[200, 400]}
+                  sizes="180px"
+                  loading="lazy"
+                  class="post-row-img"
+                />
+              </div>
+              <div class="post-row-body">
+                <time class="post-date">
+                  {post.date.toLocaleDateString("es-ES", { year: "numeric", month: "short", day: "numeric" })}
+                </time>
+                <h2 class="post-row-title">{post.title}</h2>
+                <p class="post-row-excerpt">{post.excerpt}</p>
+                <div class="post-tags">
+                  {post.tags.map((t) => (
+                    <span class:list={["post-tag", { active: t === tag }]}>{t}</span>
+                  ))}
+                </div>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  @reference "@styles/global.css";
+
+  .page {
+    @apply px-6 sm:px-8 py-10 sm:py-16 md:py-24;
+  }
+  .back-link {
+    @apply text-text/30 text-sm no-underline hover:text-primary transition-colors duration-200 mb-10 inline-block;
+  }
+  .header {
+    @apply mb-12 pb-8 border-b border-text/8;
+  }
+  .eyebrow {
+    @apply text-primary text-xs font-bold uppercase tracking-[0.2em] mb-2 block;
+  }
+  .title {
+    @apply text-text text-4xl sm:text-5xl font-bold tracking-tight mb-3;
+  }
+  .count {
+    @apply text-text/40 text-sm font-medium;
+  }
+  .post-list {
+    @apply list-none p-0 m-0 space-y-4;
+  }
+  .post-row {
+    @apply flex gap-5 sm:gap-6 rounded-xl p-3 sm:p-4 no-underline
+      transition-all duration-200 border border-transparent;
+    &:hover {
+      @apply bg-background-alt border-border/20;
+      .post-row-title { @apply text-primary; }
+    }
+  }
+  .post-row-img-wrap {
+    @apply shrink-0 w-24 sm:w-36 rounded-lg overflow-hidden;
+    aspect-ratio: 16/10;
+  }
+  .post-row-img {
+    @apply w-full h-full object-cover;
+  }
+  .post-row-body {
+    @apply flex flex-col gap-1.5 py-0.5 min-w-0;
+  }
+  .post-date {
+    @apply text-text/30 text-xs font-medium uppercase tracking-wider;
+  }
+  .post-row-title {
+    @apply text-text font-semibold text-base sm:text-lg leading-snug
+      transition-colors duration-200;
+  }
+  .post-row-excerpt {
+    @apply text-text/40 text-sm leading-relaxed line-clamp-2 hidden sm:block;
+  }
+  .post-tags {
+    @apply flex flex-wrap gap-1.5;
+  }
+  .post-tag {
+    @apply text-[0.65rem] px-2 py-0.5 rounded-full bg-primary/8 text-primary/70;
+    &.active {
+      @apply bg-primary/20 text-primary;
+    }
+  }
+</style>

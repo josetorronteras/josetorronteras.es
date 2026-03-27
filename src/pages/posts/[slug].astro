@@ -1,0 +1,236 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const toc = headings
+  .filter((h) => h.depth === 2)
+  .map((h, i) => ({ id: h.slug, text: h.text, index: i + 1 }));
+
+const formattedDate = post.data.date.toLocaleDateString("es-ES", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.excerpt}
+  image={post.data.image}
+  articleDate={post.data.date}
+>
+  <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
+    <div class="max-w-[1100px] mx-auto">
+
+      <!-- Back link -->
+      <a href="/posts" class="back-link">&larr; Blog</a>
+
+      <!-- Hero -->
+      <header class="hero">
+        <div class="hero-meta">
+          <time class="hero-date">{formattedDate}</time>
+          {post.data.tags.length > 0 && (
+            <div class="hero-tags">
+              {post.data.tags.map((tag: string) => (
+                <a href={`/tags/${tag.toLowerCase()}`} class="hero-tag">{tag}</a>
+              ))}
+            </div>
+          )}
+        </div>
+        <h1 class="hero-title">{post.data.title}</h1>
+        <p class="hero-excerpt">{post.data.excerpt}</p>
+      </header>
+
+      <!-- Content -->
+      <div class="post-layout">
+        {toc.length > 0 && (
+          <nav class="toc-mobile">
+            <p class="toc-label">En este artículo</p>
+            <ol class="toc-list">
+              {toc.map((item) => (
+                <li>
+                  <a href={`#${item.id}`} class="toc-link">
+                    <span class="toc-num">{String(item.index).padStart(2, "0")}</span>
+                    <span class="toc-text">{item.text}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
+        <div class="post-columns">
+          {toc.length > 0 && (
+            <aside class="post-sidebar">
+              <div class="toc-sticky">
+                <p class="toc-label">En este artículo</p>
+                <ol class="toc-list">
+                  {toc.map((item) => (
+                    <li>
+                      <a href={`#${item.id}`} class="toc-link">
+                        <span class="toc-num">{String(item.index).padStart(2, "0")}</span>
+                        <span class="toc-text">{item.text}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </aside>
+          )}
+          <article class="prose">
+            <Content />
+          </article>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  @reference "@styles/global.css";
+
+  .back-link {
+    @apply text-text/30 text-sm no-underline hover:text-primary transition-colors duration-200 mb-10 inline-block;
+  }
+  .hero {
+    @apply max-w-3xl mb-12 sm:mb-16;
+  }
+  .hero-meta {
+    @apply flex flex-wrap items-center gap-3 mb-5;
+  }
+  .hero-date {
+    @apply text-text/30 text-xs font-medium uppercase tracking-wider;
+  }
+  .hero-tags {
+    @apply flex flex-wrap gap-1.5;
+  }
+  .hero-tag {
+    @apply text-[0.65rem] px-2 py-0.5 rounded-full bg-primary/10 text-primary no-underline
+      transition-colors duration-150 hover:bg-primary/20;
+  }
+  .hero-title {
+    @apply text-text font-extrabold leading-[1.1] tracking-tight
+      text-3xl sm:text-4xl lg:text-5xl mb-5;
+  }
+  .hero-excerpt {
+    @apply text-text/50 text-lg sm:text-xl leading-relaxed;
+  }
+
+  /* Layout */
+  .post-layout {
+    @apply border-t border-text/8 pt-10;
+  }
+  .post-columns {
+    @apply flex gap-16 items-start;
+  }
+  .post-sidebar {
+    @apply hidden lg:block shrink-0 w-[200px] xl:w-[220px];
+
+    .toc-sticky {
+      @apply sticky top-28;
+    }
+  }
+  .toc-mobile {
+    @apply lg:hidden mb-10 pb-8 border-b border-text/8;
+  }
+  .toc-label {
+    @apply text-[0.625rem] font-bold uppercase tracking-[0.22em] text-text/25 mb-4 block;
+  }
+  .toc-list {
+    @apply space-y-1 list-none p-0 m-0;
+  }
+  .toc-link {
+    @apply flex items-baseline gap-3 py-1.5 text-text/35 no-underline transition-colors duration-150;
+
+    &:hover {
+      @apply text-text;
+      .toc-num { @apply text-primary; }
+    }
+  }
+  .toc-num {
+    @apply text-[0.625rem] font-mono font-bold tracking-wider text-primary/40 shrink-0 tabular-nums;
+    transition: color 0.15s;
+  }
+  .toc-text {
+    @apply text-[0.8125rem] leading-snug;
+  }
+  .prose {
+    @apply flex-1 min-w-0 text-text/80 text-[1.0625rem] sm:text-[1.125rem] leading-[1.85];
+
+    :global(h2) {
+      @apply text-text font-bold text-2xl sm:text-[1.75rem] mt-14 mb-5 scroll-mt-28;
+    }
+    :global(h3) {
+      @apply text-text font-semibold text-xl mt-10 mb-3 scroll-mt-28;
+    }
+    :global(p) {
+      @apply mb-5;
+    }
+    :global(a) {
+      @apply text-primary underline underline-offset-4 decoration-primary/30
+        hover:decoration-primary transition-all duration-150;
+    }
+    :global(strong) {
+      @apply font-semibold text-text;
+    }
+    :global(ul) {
+      @apply list-none pl-0 mb-6 space-y-2;
+    }
+    :global(ul li) {
+      @apply pl-6 relative;
+    }
+    :global(ul li)::before {
+      content: "\2192";
+      @apply absolute left-0 text-primary/50 font-light text-sm;
+      top: 0.15em;
+    }
+    :global(ol) {
+      @apply list-decimal list-inside mb-6 space-y-2 text-text/75;
+    }
+    :global(blockquote) {
+      @apply pl-6 my-10 text-text/60 text-xl leading-relaxed font-light italic
+        border-l-[3px] border-l-primary/60;
+    }
+    :global(code:not(pre code)) {
+      @apply bg-text/8 text-text/90 px-1.5 py-0.5 rounded text-[0.85em] font-mono tracking-tight;
+    }
+    :global(pre) {
+      @apply my-8 p-5 rounded-xl overflow-x-auto text-[0.875rem] leading-relaxed
+        bg-[#0d0f14] text-[#cdd6f4];
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 8px 32px -4px rgba(0,0,0,0.35);
+    }
+    :global(pre code) {
+      @apply bg-transparent p-0 text-inherit text-sm;
+    }
+    :global(hr) {
+      @apply border-none my-14 bg-text/10;
+      height: 1px;
+    }
+    :global(img) {
+      @apply rounded-xl my-10 w-full;
+      box-shadow: 0 2px 20px -2px rgba(0,0,0,0.12);
+    }
+    :global(table) {
+      @apply w-full my-8 text-sm border-collapse;
+    }
+    :global(th) {
+      @apply text-left pb-2 border-b-2 border-text/15
+        text-[0.75rem] uppercase tracking-wider text-text/40 font-semibold;
+    }
+    :global(td) {
+      @apply py-2.5 border-b border-text/8 text-text/75;
+    }
+  }
+</style>

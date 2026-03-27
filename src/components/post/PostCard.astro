@@ -1,7 +1,19 @@
 ---
 import { Image } from "astro:assets";
+import type { Post } from "@data/types/Post";
+
+interface Props {
+  post: Post;
+  class?: string;
+}
 
 const { post, class: className } = Astro.props;
+
+const formattedDate = post.date.toLocaleDateString("es-ES", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
 ---
 
 <article class:list={[className, "card-article"]}>
@@ -14,28 +26,59 @@ const { post, class: className } = Astro.props;
     loading="lazy"
   />
   <div class="content">
+    <p class="date">{formattedDate}</p>
     <h2 class="title">
       <a class="card-link" href={`/posts/${post.slug}/`}>
         {post.title}
       </a>
     </h2>
     <p class="excerpt">{post.excerpt}</p>
+    {
+      post.tags && post.tags.length > 0 && (
+        <div class="tags">
+          {post.tags.map((tag: string) => (
+            <a href={`/tags/${tag.toLowerCase()}`} class="tag">
+              {tag}
+            </a>
+          ))}
+        </div>
+      )
+    }
   </div>
 </article>
 
 <style>
   @reference "@styles/global.css";
 
+  .card-article {
+    @apply border-border/30 rounded-lg border-2 p-4;
+    &:hover {
+      @apply border-primary shadow-lg;
+    }
+  }
   img {
     @apply aspect-[16/9] w-full rounded-lg object-cover;
   }
   .content {
     @apply mt-4 flex flex-grow flex-col text-left;
   }
+  .date {
+    @apply text-primary text-sm font-medium;
+  }
   .title {
     @apply text-text mt-1 text-left text-xl font-semibold;
   }
   .excerpt {
     @apply text-text/80 mt-2 text-base;
+  }
+  .tags {
+    @apply flex flex-wrap gap-2 mt-4;
+  }
+  .tag {
+    @apply text-xs px-2 py-1 rounded-full bg-primary/10 text-primary no-underline transition-colors duration-150;
+
+    &:hover {
+      @apply bg-primary/20;
+    }
   }
 </style>
