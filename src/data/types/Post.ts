@@ -5,6 +5,7 @@
  * @property {string} excerpt - A short summary of the post.
  * @property {string} image - (Optional) The main image URL for the post.
  * @property {string} imageAlt - (Optional) Alt text for the image.
+ * @property {Date} date - The publication date of the post.
  */
 export type Post = {
   title: string;
@@ -12,4 +13,5 @@ export type Post = {
   excerpt: string;
   image: string;
   imageAlt: string;
+  date: Date;
 };
