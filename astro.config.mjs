@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://josetorronteras.es",
   image: {
-    domains: ["avatars.githubusercontent.com"],
+    domains: ["avatars.githubusercontent.com", "is1-ssl.mzstatic.com"],
   },
   vite: {
     plugins: [tailwindcss()],
