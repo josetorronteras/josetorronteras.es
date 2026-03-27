@@ -14,12 +14,14 @@ const { toc } = Astro.props;
 
 <p class="toc-label">En este artículo</p>
 <ol class="toc-list">
-  {toc.map((item) => (
-    <li>
-      <a href={`#${item.id}`} class="toc-link">
-        <span class="toc-num">{String(item.index).padStart(2, "0")}</span>
-        <span class="toc-text">{item.text}</span>
-      </a>
-    </li>
-  ))}
+  {
+    toc.map((item) => (
+      <li>
+        <a href={`#${item.id}`} class="toc-link">
+          <span class="toc-num">{String(item.index).padStart(2, "0")}</span>
+          <span class="toc-text">{item.text}</span>
+        </a>
+      </li>
+    ))
+  }
 </ol>

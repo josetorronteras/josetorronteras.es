@@ -11,7 +11,9 @@ const posts = entries
 const allTags = [...new Set(posts.flatMap((p) => p.tags))];
 const [featured, ...rest] = posts;
 const RECENT_DAYS = 14;
-const isRecent = featured && (Date.now() - featured.date.getTime()) < RECENT_DAYS * 24 * 60 * 60 * 1000;
+const isRecent =
+  featured &&
+  Date.now() - featured.date.getTime() < RECENT_DAYS * 24 * 60 * 60 * 1000;
 ---
 
 <Layout
