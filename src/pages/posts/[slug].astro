@@ -32,7 +32,6 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
 >
   <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
     <div class="max-w-[1100px] mx-auto">
-
       <!-- Back link -->
       <a href="/posts" class="back-link">&larr; Blog</a>
 
@@ -40,13 +39,17 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
       <header class="hero">
         <div class="hero-meta">
           <time class="hero-date">{formattedDate}</time>
-          {post.data.tags.length > 0 && (
-            <div class="hero-tags">
-              {post.data.tags.map((tag: string) => (
-                <a href={`/tags/${tag.toLowerCase()}`} class="hero-tag">{tag}</a>
-              ))}
-            </div>
-          )}
+          {
+            post.data.tags.length > 0 && (
+              <div class="hero-tags">
+                {post.data.tags.map((tag: string) => (
+                  <a href={`/tags/${tag.toLowerCase()}`} class="hero-tag">
+                    {tag}
+                  </a>
+                ))}
+              </div>
+            )
+          }
         </div>
         <h1 class="hero-title">{post.data.title}</h1>
         <p class="hero-excerpt">{post.data.excerpt}</p>
@@ -54,39 +57,47 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
 
       <!-- Content -->
       <div class="post-layout">
-        {toc.length > 0 && (
-          <nav class="toc-mobile">
-            <p class="toc-label">En este artículo</p>
-            <ol class="toc-list">
-              {toc.map((item) => (
-                <li>
-                  <a href={`#${item.id}`} class="toc-link">
-                    <span class="toc-num">{String(item.index).padStart(2, "0")}</span>
-                    <span class="toc-text">{item.text}</span>
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </nav>
-        )}
+        {
+          toc.length > 0 && (
+            <nav class="toc-mobile">
+              <p class="toc-label">En este artículo</p>
+              <ol class="toc-list">
+                {toc.map((item) => (
+                  <li>
+                    <a href={`#${item.id}`} class="toc-link">
+                      <span class="toc-num">
+                        {String(item.index).padStart(2, "0")}
+                      </span>
+                      <span class="toc-text">{item.text}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )
+        }
         <div class="post-columns">
-          {toc.length > 0 && (
-            <aside class="post-sidebar">
-              <div class="toc-sticky">
-                <p class="toc-label">En este artículo</p>
-                <ol class="toc-list">
-                  {toc.map((item) => (
-                    <li>
-                      <a href={`#${item.id}`} class="toc-link">
-                        <span class="toc-num">{String(item.index).padStart(2, "0")}</span>
-                        <span class="toc-text">{item.text}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </aside>
-          )}
+          {
+            toc.length > 0 && (
+              <aside class="post-sidebar">
+                <div class="toc-sticky">
+                  <p class="toc-label">En este artículo</p>
+                  <ol class="toc-list">
+                    {toc.map((item) => (
+                      <li>
+                        <a href={`#${item.id}`} class="toc-link">
+                          <span class="toc-num">
+                            {String(item.index).padStart(2, "0")}
+                          </span>
+                          <span class="toc-text">{item.text}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </aside>
+            )
+          }
           <article class="prose">
             <Content />
           </article>
@@ -100,137 +111,133 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
   @reference "@styles/global.css";
 
   .back-link {
-    @apply text-text/30 text-sm no-underline hover:text-primary transition-colors duration-200 mb-10 inline-block;
+    @apply text-text/30 hover:text-primary mb-10 inline-block text-sm no-underline transition-colors duration-200;
   }
   .hero {
-    @apply max-w-3xl mb-12 sm:mb-16;
+    @apply mb-12 max-w-3xl sm:mb-16;
   }
   .hero-meta {
-    @apply flex flex-wrap items-center gap-3 mb-5;
+    @apply mb-5 flex flex-wrap items-center gap-3;
   }
   .hero-date {
-    @apply text-text/30 text-xs font-medium uppercase tracking-wider;
+    @apply text-text/30 text-xs font-medium tracking-wider uppercase;
   }
   .hero-tags {
     @apply flex flex-wrap gap-1.5;
   }
   .hero-tag {
-    @apply text-[0.65rem] px-2 py-0.5 rounded-full bg-primary/10 text-primary no-underline
-      transition-colors duration-150 hover:bg-primary/20;
+    @apply bg-primary/10 text-primary hover:bg-primary/20 rounded-full px-2 py-0.5 text-[0.65rem] no-underline transition-colors duration-150;
   }
   .hero-title {
-    @apply text-text font-extrabold leading-[1.1] tracking-tight
-      text-3xl sm:text-4xl lg:text-5xl mb-5;
+    @apply text-text mb-5 text-3xl leading-[1.1] font-extrabold tracking-tight sm:text-4xl lg:text-5xl;
   }
   .hero-excerpt {
-    @apply text-text/50 text-lg sm:text-xl leading-relaxed;
+    @apply text-text/50 text-lg leading-relaxed sm:text-xl;
   }
 
   /* Layout */
   .post-layout {
-    @apply border-t border-text/8 pt-10;
+    @apply border-text/8 border-t pt-10;
   }
   .post-columns {
-    @apply flex gap-16 items-start;
+    @apply flex items-start gap-16;
   }
   .post-sidebar {
-    @apply hidden lg:block shrink-0 w-[200px] xl:w-[220px];
+    @apply hidden w-[200px] shrink-0 lg:block xl:w-[220px];
 
     .toc-sticky {
       @apply sticky top-28;
     }
   }
   .toc-mobile {
-    @apply lg:hidden mb-10 pb-8 border-b border-text/8;
+    @apply border-text/8 mb-10 border-b pb-8 lg:hidden;
   }
   .toc-label {
-    @apply text-[0.625rem] font-bold uppercase tracking-[0.22em] text-text/25 mb-4 block;
+    @apply text-text/25 mb-4 block text-[0.625rem] font-bold tracking-[0.22em] uppercase;
   }
   .toc-list {
-    @apply space-y-1 list-none p-0 m-0;
+    @apply m-0 list-none space-y-1 p-0;
   }
   .toc-link {
-    @apply flex items-baseline gap-3 py-1.5 text-text/35 no-underline transition-colors duration-150;
+    @apply text-text/35 flex items-baseline gap-3 py-1.5 no-underline transition-colors duration-150;
 
     &:hover {
       @apply text-text;
-      .toc-num { @apply text-primary; }
+      .toc-num {
+        @apply text-primary;
+      }
     }
   }
   .toc-num {
-    @apply text-[0.625rem] font-mono font-bold tracking-wider text-primary/40 shrink-0 tabular-nums;
+    @apply text-primary/40 shrink-0 font-mono text-[0.625rem] font-bold tracking-wider tabular-nums;
     transition: color 0.15s;
   }
   .toc-text {
     @apply text-[0.8125rem] leading-snug;
   }
   .prose {
-    @apply flex-1 min-w-0 text-text/80 text-[1.0625rem] sm:text-[1.125rem] leading-[1.85];
+    @apply text-text/80 min-w-0 flex-1 text-[1.0625rem] leading-[1.85] sm:text-[1.125rem];
 
     :global(h2) {
-      @apply text-text font-bold text-2xl sm:text-[1.75rem] mt-14 mb-5 scroll-mt-28;
+      @apply text-text mt-14 mb-5 scroll-mt-28 text-2xl font-bold sm:text-[1.75rem];
     }
     :global(h3) {
-      @apply text-text font-semibold text-xl mt-10 mb-3 scroll-mt-28;
+      @apply text-text mt-10 mb-3 scroll-mt-28 text-xl font-semibold;
     }
     :global(p) {
       @apply mb-5;
     }
     :global(a) {
-      @apply text-primary underline underline-offset-4 decoration-primary/30
-        hover:decoration-primary transition-all duration-150;
+      @apply text-primary decoration-primary/30 hover:decoration-primary underline underline-offset-4 transition-all duration-150;
     }
     :global(strong) {
-      @apply font-semibold text-text;
+      @apply text-text font-semibold;
     }
     :global(ul) {
-      @apply list-none pl-0 mb-6 space-y-2;
+      @apply mb-6 list-none space-y-2 pl-0;
     }
     :global(ul li) {
-      @apply pl-6 relative;
+      @apply relative pl-6;
     }
     :global(ul li)::before {
       content: "\2192";
-      @apply absolute left-0 text-primary/50 font-light text-sm;
+      @apply text-primary/50 absolute left-0 text-sm font-light;
       top: 0.15em;
     }
     :global(ol) {
-      @apply list-decimal list-inside mb-6 space-y-2 text-text/75;
+      @apply text-text/75 mb-6 list-inside list-decimal space-y-2;
     }
     :global(blockquote) {
-      @apply pl-6 my-10 text-text/60 text-xl leading-relaxed font-light italic
-        border-l-[3px] border-l-primary/60;
+      @apply text-text/60 border-l-primary/60 my-10 border-l-[3px] pl-6 text-xl leading-relaxed font-light italic;
     }
     :global(code:not(pre code)) {
-      @apply bg-text/8 text-text/90 px-1.5 py-0.5 rounded text-[0.85em] font-mono tracking-tight;
+      @apply bg-text/8 text-text/90 rounded px-1.5 py-0.5 font-mono text-[0.85em] tracking-tight;
     }
     :global(pre) {
-      @apply my-8 p-5 rounded-xl overflow-x-auto text-[0.875rem] leading-relaxed
-        bg-[#0d0f14] text-[#cdd6f4];
+      @apply my-8 overflow-x-auto rounded-xl bg-[#0d0f14] p-5 text-[0.875rem] leading-relaxed text-[#cdd6f4];
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.06),
-        0 8px 32px -4px rgba(0,0,0,0.35);
+        0 0 0 1px rgba(255, 255, 255, 0.06),
+        0 8px 32px -4px rgba(0, 0, 0, 0.35);
     }
     :global(pre code) {
-      @apply bg-transparent p-0 text-inherit text-sm;
+      @apply bg-transparent p-0 text-sm text-inherit;
     }
     :global(hr) {
-      @apply border-none my-14 bg-text/10;
+      @apply bg-text/10 my-14 border-none;
       height: 1px;
     }
     :global(img) {
-      @apply rounded-xl my-10 w-full;
-      box-shadow: 0 2px 20px -2px rgba(0,0,0,0.12);
+      @apply my-10 w-full rounded-xl;
+      box-shadow: 0 2px 20px -2px rgba(0, 0, 0, 0.12);
     }
     :global(table) {
-      @apply w-full my-8 text-sm border-collapse;
+      @apply my-8 w-full border-collapse text-sm;
     }
     :global(th) {
-      @apply text-left pb-2 border-b-2 border-text/15
-        text-[0.75rem] uppercase tracking-wider text-text/40 font-semibold;
+      @apply border-text/15 text-text/40 border-b-2 pb-2 text-left text-[0.75rem] font-semibold tracking-wider uppercase;
     }
     :global(td) {
-      @apply py-2.5 border-b border-text/8 text-text/75;
+      @apply border-text/8 text-text/75 border-b py-2.5;
     }
   }
 </style>

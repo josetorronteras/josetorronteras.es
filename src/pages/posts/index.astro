@@ -18,100 +18,119 @@ const [featured, ...rest] = posts;
 >
   <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
     <div class="max-w-[1100px] mx-auto">
-
       <!-- Header -->
       <header class="header">
         <div class="header-top">
           <h1 class="title">Blog</h1>
           <p class="subtitle">
-            Escribo sobre <span class="highlight-text">Swift</span>, <span class="highlight-text">SwiftUI</span>,
-            arquitectura y todo lo que aprendo construyendo apps para el ecosistema Apple.
+            Escribo sobre <span class="highlight-text">Swift</span>, <span
+              class="highlight-text">SwiftUI</span
+            >, arquitectura y todo lo que aprendo construyendo apps para el
+            ecosistema Apple.
           </p>
         </div>
-        {allTags.length > 0 && (
-          <nav class="tags-nav" aria-label="Filtrar por tag">
-            <span class="tags-label">Explorar</span>
-            <ul class="tags-list">
-              {allTags.map((tag) => (
-                <li>
-                  <a href={`/tags/${tag.toLowerCase()}`} class="tag-pill">{tag}</a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        )}
+        {
+          allTags.length > 0 && (
+            <nav class="tags-nav" aria-label="Filtrar por tag">
+              <span class="tags-label">Explorar</span>
+              <ul class="tags-list">
+                {allTags.map((tag) => (
+                  <li>
+                    <a href={`/tags/${tag.toLowerCase()}`} class="tag-pill">
+                      {tag}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )
+        }
       </header>
 
       <!-- Featured post -->
-      {featured && (
-        <section class="featured" aria-label="Artículo destacado">
-          <a href={`/posts/${featured.slug}/`} class="featured-link">
-            <div class="featured-img-wrap">
-              <Image
-                inferSize
-                src={featured.image}
-                alt={featured.imageAlt}
-                widths={[400, 800, 1200]}
-                sizes="(max-width: 640px) 100vw, 50vw"
-                loading="eager"
-                class="featured-img"
-              />
-              <span class="featured-badge">Nuevo</span>
-            </div>
-            <div class="featured-body">
-              <time class="post-date">
-                {featured.date.toLocaleDateString("es-ES", { year: "numeric", month: "long", day: "numeric" })}
-              </time>
-              <h2 class="featured-title">{featured.title}</h2>
-              <p class="featured-excerpt">{featured.excerpt}</p>
-              <div class="featured-footer">
-                <div class="post-tags">
-                  {featured.tags.map((tag) => (
-                    <span class="post-tag">{tag}</span>
-                  ))}
-                </div>
-                <span class="read-more">Leer artículo &rarr;</span>
+      {
+        featured && (
+          <section class="featured" aria-label="Artículo destacado">
+            <a href={`/posts/${featured.slug}/`} class="featured-link">
+              <div class="featured-img-wrap">
+                <Image
+                  inferSize
+                  src={featured.image}
+                  alt={featured.imageAlt}
+                  widths={[400, 800, 1200]}
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  loading="eager"
+                  class="featured-img"
+                />
+                <span class="featured-badge">Nuevo</span>
               </div>
-            </div>
-          </a>
-        </section>
-      )}
+              <div class="featured-body">
+                <time class="post-date">
+                  {featured.date.toLocaleDateString("es-ES", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+                <h2 class="featured-title">{featured.title}</h2>
+                <p class="featured-excerpt">{featured.excerpt}</p>
+                <div class="featured-footer">
+                  <div class="post-tags">
+                    {featured.tags.map((tag) => (
+                      <span class="post-tag">{tag}</span>
+                    ))}
+                  </div>
+                  <span class="read-more">Leer artículo &rarr;</span>
+                </div>
+              </div>
+            </a>
+          </section>
+        )
+      }
 
       <!-- Post list -->
-      {rest.length > 0 && (
-        <section class="posts-section" aria-label="Todos los artículos">
-          <h2 class="section-heading">Más artículos</h2>
-          <ul class="post-list">
-            {rest.map((post) => (
-              <li>
-                <a href={`/posts/${post.slug}/`} class="post-row">
-                  <div class="post-row-img-wrap">
-                    <Image
-                      inferSize
-                      src={post.image}
-                      alt={post.imageAlt}
-                      widths={[200, 400]}
-                      sizes="180px"
-                      loading="lazy"
-                      class="post-row-img"
-                    />
-                  </div>
-                  <div class="post-row-body">
-                    <time class="post-date">{post.date.toLocaleDateString("es-ES", { year: "numeric", month: "short", day: "numeric" })}</time>
-                    <h3 class="post-row-title">{post.title}</h3>
-                    <p class="post-row-excerpt">{post.excerpt}</p>
-                    <div class="post-tags">
-                      {post.tags.map((tag) => (
-                        <span class="post-tag">{tag}</span>
-                      ))}
+      {
+        rest.length > 0 && (
+          <section class="posts-section" aria-label="Todos los artículos">
+            <h2 class="section-heading">Más artículos</h2>
+            <ul class="post-list">
+              {rest.map((post) => (
+                <li>
+                  <a href={`/posts/${post.slug}/`} class="post-row">
+                    <div class="post-row-img-wrap">
+                      <Image
+                        inferSize
+                        src={post.image}
+                        alt={post.imageAlt}
+                        widths={[200, 400]}
+                        sizes="180px"
+                        loading="lazy"
+                        class="post-row-img"
+                      />
                     </div>
-                  </div>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+                    <div class="post-row-body">
+                      <time class="post-date">
+                        {post.date.toLocaleDateString("es-ES", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </time>
+                      <h3 class="post-row-title">{post.title}</h3>
+                      <p class="post-row-excerpt">{post.excerpt}</p>
+                      <div class="post-tags">
+                        {post.tags.map((tag) => (
+                          <span class="post-tag">{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
     </div>
   </main>
 </Layout>
@@ -126,24 +145,22 @@ const [featured, ...rest] = posts;
     @apply mb-2;
   }
   .title {
-    @apply text-text text-4xl sm:text-5xl font-bold tracking-tight mb-4;
+    @apply text-text mb-4 text-4xl font-bold tracking-tight sm:text-5xl;
   }
   .subtitle {
-    @apply text-text/50 text-base sm:text-lg leading-relaxed max-w-xl;
+    @apply text-text/50 max-w-xl text-base leading-relaxed sm:text-lg;
   }
   .tags-nav {
     @apply flex flex-wrap items-center gap-3;
   }
   .tags-label {
-    @apply text-text/30 text-xs font-semibold uppercase tracking-widest mr-1;
+    @apply text-text/30 mr-1 text-xs font-semibold tracking-widest uppercase;
   }
   .tags-list {
-    @apply flex flex-wrap gap-2 list-none p-0 m-0;
+    @apply m-0 flex list-none flex-wrap gap-2 p-0;
   }
   .tag-pill {
-    @apply text-xs font-medium px-3 py-1.5 rounded-full
-      border border-border/30 text-text/60
-      no-underline transition-all duration-200;
+    @apply border-border/30 text-text/60 rounded-full border px-3 py-1.5 text-xs font-medium no-underline transition-all duration-200;
     &:hover {
       @apply border-primary text-primary bg-primary/10;
     }
@@ -152,13 +169,15 @@ const [featured, ...rest] = posts;
     @apply mb-14 sm:mb-20;
   }
   .featured-link {
-    @apply grid sm:grid-cols-2 gap-0 rounded-2xl overflow-hidden no-underline
-      bg-background-alt border border-border/20
-      transition-all duration-300;
+    @apply bg-background-alt border-border/20 grid gap-0 overflow-hidden rounded-2xl border no-underline transition-all duration-300 sm:grid-cols-2;
     &:hover {
-      @apply border-primary/40 shadow-2xl shadow-primary/5;
-      .featured-img { transform: scale(1.04); }
-      .read-more { @apply text-primary; }
+      @apply border-primary/40 shadow-primary/5 shadow-2xl;
+      .featured-img {
+        transform: scale(1.04);
+      }
+      .read-more {
+        @apply text-primary;
+      }
     }
   }
   .featured-img-wrap {
@@ -166,68 +185,67 @@ const [featured, ...rest] = posts;
     aspect-ratio: 4/3;
   }
   .featured-img {
-    @apply w-full h-full object-cover transition-transform duration-700 ease-out;
+    @apply h-full w-full object-cover transition-transform duration-700 ease-out;
   }
   .featured-badge {
-    @apply absolute top-4 left-4 text-[0.6rem] font-bold uppercase tracking-[0.15em]
-      bg-primary text-white px-2.5 py-1 rounded-md;
+    @apply bg-primary absolute top-4 left-4 rounded-md px-2.5 py-1 text-[0.6rem] font-bold tracking-[0.15em] text-white uppercase;
   }
   .featured-body {
     @apply flex flex-col justify-center gap-3 p-6 sm:p-8 lg:p-10;
   }
   .featured-title {
-    @apply text-text font-bold text-xl sm:text-2xl lg:text-3xl leading-snug tracking-tight;
+    @apply text-text text-xl leading-snug font-bold tracking-tight sm:text-2xl lg:text-3xl;
   }
   .featured-excerpt {
-    @apply text-text/50 text-sm sm:text-base leading-relaxed line-clamp-3;
+    @apply text-text/50 line-clamp-3 text-sm leading-relaxed sm:text-base;
   }
   .featured-footer {
-    @apply flex flex-wrap items-center justify-between gap-4 mt-2;
+    @apply mt-2 flex flex-wrap items-center justify-between gap-4;
   }
   .read-more {
     @apply text-text/30 text-sm font-medium transition-colors duration-200;
   }
   .post-date {
-    @apply text-text/30 text-xs font-medium uppercase tracking-wider;
+    @apply text-text/30 text-xs font-medium tracking-wider uppercase;
   }
   .post-tags {
     @apply flex flex-wrap gap-1.5;
   }
   .post-tag {
-    @apply text-[0.65rem] px-2 py-0.5 rounded-full bg-primary/8 text-primary/70;
+    @apply bg-primary/8 text-primary/70 rounded-full px-2 py-0.5 text-[0.65rem];
   }
   .posts-section {
-    @apply border-t border-text/8 pt-10;
+    @apply border-text/8 border-t pt-10;
   }
   .section-heading {
-    @apply text-text/40 text-xs font-bold uppercase tracking-[0.2em] mb-8;
+    @apply text-text/40 mb-8 text-xs font-bold tracking-[0.2em] uppercase;
   }
   .post-list {
-    @apply list-none p-0 m-0 space-y-4;
+    @apply m-0 list-none space-y-4 p-0;
   }
   .post-row {
-    @apply flex gap-5 sm:gap-6 rounded-xl p-3 sm:p-4 no-underline
-      transition-all duration-200 border border-transparent;
+    @apply flex gap-5 rounded-xl border border-transparent p-3 no-underline transition-all duration-200 sm:gap-6 sm:p-4;
     &:hover {
       @apply bg-background-alt border-border/20;
-      .post-row-title { @apply text-primary; }
+      .post-row-title {
+        @apply text-primary;
+      }
     }
   }
   .post-row-img-wrap {
-    @apply shrink-0 w-24 sm:w-36 rounded-lg overflow-hidden;
+    @apply w-24 shrink-0 overflow-hidden rounded-lg sm:w-36;
     aspect-ratio: 16/10;
   }
   .post-row-img {
-    @apply w-full h-full object-cover;
+    @apply h-full w-full object-cover;
   }
   .post-row-body {
-    @apply flex flex-col gap-1.5 py-0.5 min-w-0;
+    @apply flex min-w-0 flex-col gap-1.5 py-0.5;
   }
   .post-row-title {
-    @apply text-text font-semibold text-base sm:text-lg leading-snug
-      transition-colors duration-200;
+    @apply text-text text-base leading-snug font-semibold transition-colors duration-200 sm:text-lg;
   }
   .post-row-excerpt {
-    @apply text-text/40 text-sm leading-relaxed line-clamp-2 hidden sm:block;
+    @apply text-text/40 line-clamp-2 hidden text-sm leading-relaxed sm:block;
   }
 </style>
