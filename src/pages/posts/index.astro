@@ -14,8 +14,16 @@ const RECENT_DAYS = 14;
 const isRecent =
   featured &&
   Date.now() - featured.date.getTime() < RECENT_DAYS * 24 * 60 * 60 * 1000;
-const dateLong = new Intl.DateTimeFormat("es-ES", { year: "numeric", month: "long", day: "numeric" });
-const dateShort = new Intl.DateTimeFormat("es-ES", { year: "numeric", month: "short", day: "numeric" });
+const dateLong = new Intl.DateTimeFormat("es-ES", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+const dateShort = new Intl.DateTimeFormat("es-ES", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
 ---
 
 <Layout
@@ -42,7 +50,10 @@ const dateShort = new Intl.DateTimeFormat("es-ES", { year: "numeric", month: "sh
               <ul class="tags-list">
                 {allTags.map((tag) => (
                   <li>
-                    <a href={`/tags/${encodeURIComponent(tag.toLowerCase())}`} class="tag-pill">
+                    <a
+                      href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
+                      class="tag-pill"
+                    >
                       {tag}
                     </a>
                   </li>
@@ -71,9 +82,7 @@ const dateShort = new Intl.DateTimeFormat("es-ES", { year: "numeric", month: "sh
                 {isRecent && <span class="featured-badge">Nuevo</span>}
               </div>
               <div class="featured-body">
-                <time class="post-date">
-                  {dateLong.format(featured.date)}
-                </time>
+                <time class="post-date">{dateLong.format(featured.date)}</time>
                 <h2 class="featured-title">{featured.title}</h2>
                 <p class="featured-excerpt">{featured.excerpt}</p>
                 <div class="featured-footer">
