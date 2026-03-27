@@ -14,6 +14,8 @@ const RECENT_DAYS = 14;
 const isRecent =
   featured &&
   Date.now() - featured.date.getTime() < RECENT_DAYS * 24 * 60 * 60 * 1000;
+const dateLong = new Intl.DateTimeFormat("es-ES", { year: "numeric", month: "long", day: "numeric" });
+const dateShort = new Intl.DateTimeFormat("es-ES", { year: "numeric", month: "short", day: "numeric" });
 ---
 
 <Layout
@@ -40,7 +42,7 @@ const isRecent =
               <ul class="tags-list">
                 {allTags.map((tag) => (
                   <li>
-                    <a href={`/tags/${tag.toLowerCase()}`} class="tag-pill">
+                    <a href={`/tags/${encodeURIComponent(tag.toLowerCase())}`} class="tag-pill">
                       {tag}
                     </a>
                   </li>
@@ -66,15 +68,11 @@ const isRecent =
                   loading="eager"
                   class="featured-img"
                 />
-                <span class="featured-badge">Nuevo</span>
+                {isRecent && <span class="featured-badge">Nuevo</span>}
               </div>
               <div class="featured-body">
                 <time class="post-date">
-                  {featured.date.toLocaleDateString("es-ES", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                  {dateLong.format(featured.date)}
                 </time>
                 <h2 class="featured-title">{featured.title}</h2>
                 <p class="featured-excerpt">{featured.excerpt}</p>
@@ -114,11 +112,7 @@ const isRecent =
                     </div>
                     <div class="post-row-body">
                       <time class="post-date">
-                        {post.date.toLocaleDateString("es-ES", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
+                        {dateShort.format(post.date)}
                       </time>
                       <h3 class="post-row-title">{post.title}</h3>
                       <p class="post-row-excerpt">{post.excerpt}</p>

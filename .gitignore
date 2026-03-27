@@ -1,8 +1,6 @@
 # build output
 dist/
 
-# local content symlink (CI clones the content repo here)
-src/data/content
 # generated types
 .astro/
 

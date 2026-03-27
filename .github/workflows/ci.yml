@@ -95,7 +95,7 @@ jobs:
       - name: Link Checker
         uses: lycheeverse/lychee-action@v2.8.0
         with:
-          args: --verbose --no-progress --root-dir '.' './**/*.html'
+          args: --verbose --no-progress --root-dir '.' --remap 'https://josetorronteras.es file://.' './**/*.html'
           fail: true
           failIfEmpty: false
           workingDirectory: './dist'

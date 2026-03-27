@@ -61,19 +61,7 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
         {
           toc.length > 0 && (
             <nav class="toc-mobile">
-              <p class="toc-label">En este artículo</p>
-              <ol class="toc-list">
-                {toc.map((item) => (
-                  <li>
-                    <a href={`#${item.id}`} class="toc-link">
-                      <span class="toc-num">
-                        {String(item.index).padStart(2, "0")}
-                      </span>
-                      <span class="toc-text">{item.text}</span>
-                    </a>
-                  </li>
-                ))}
-              </ol>
+              <TocList toc={toc} />
             </nav>
           )
         }
@@ -82,19 +70,7 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
             toc.length > 0 && (
               <aside class="post-sidebar">
                 <div class="toc-sticky">
-                  <p class="toc-label">En este artículo</p>
-                  <ol class="toc-list">
-                    {toc.map((item) => (
-                      <li>
-                        <a href={`#${item.id}`} class="toc-link">
-                          <span class="toc-num">
-                            {String(item.index).padStart(2, "0")}
-                          </span>
-                          <span class="toc-text">{item.text}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ol>
+                  <TocList toc={toc} />
                 </div>
               </aside>
             )
