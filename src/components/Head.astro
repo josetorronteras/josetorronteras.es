@@ -1,9 +1,96 @@
 ---
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  articleDate?: Date;
+}
 
+const {
+  title = "Jose Torronteras - iOS Developer",
+  description = "iOS developer crafting pixel-perfect apps with Swift & SwiftUI. Explore my journey, tips, and tools for building apps that users love.",
+  image = "/og-image.png",
+  articleDate,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImageURL = new URL(image, Astro.site);
+const fullTitle =
+  title === "Jose Torronteras - iOS Developer"
+    ? title
+    : `${title} | Jose Torronteras`;
+
+const jsonLd = articleDate
+  ? {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: fullTitle,
+      description,
+      image: socialImageURL.toString(),
+      datePublished: articleDate.toISOString(),
+      author: {
+        "@type": "Person",
+        name: "Jose Torronteras",
+        url: Astro.site?.toString(),
+      },
+      publisher: {
+        "@type": "Person",
+        name: "Jose Torronteras",
+        url: Astro.site?.toString(),
+      },
+      url: canonicalURL.toString(),
+    }
+  : {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name: "Jose Torronteras",
+      url: Astro.site?.toString(),
+      jobTitle: "iOS Developer",
+      sameAs: [
+        "https://linkedin.com/in/josetorronteras",
+        "https://github.com/josetorronteras",
+      ],
+    };
 ---
 
 <meta charset="utf-8" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<meta name="viewport" content="width=device-width" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
-<title>Jose Torronteras</title>
+<meta name="author" content="Jose Torronteras" />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#000000" />
+
+<link rel="canonical" href={canonicalURL} />
+
+<title>{fullTitle}</title>
+
+<meta name="description" content={description} />
+
+<meta property="og:type" content={articleDate ? "article" : "website"} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={socialImageURL} />
+<meta property="og:site_name" content="Jose Torronteras" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={socialImageURL} />
+
+{
+  articleDate && (
+    <meta
+      property="article:published_time"
+      content={articleDate.toISOString()}
+    />
+  )
+}
+
+<script
+  is:inline
+  type="application/ld+json"
+  set:html={JSON.stringify(jsonLd)}
+/>
