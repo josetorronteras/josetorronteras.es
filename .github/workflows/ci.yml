@@ -93,7 +93,7 @@ jobs:
       - name: Add .lycheeignore
         run: cp .lycheeignore ./dist/.lycheeignore
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v2
+        uses: lycheeverse/lychee-action@v2.8.0
         with:
           args: --verbose --no-progress './**/*.md' './**/*.html'
           fail: true
