@@ -1,18 +1,25 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import TocList from "@components/post/TocList.astro";
+import Breadcrumbs from "@components/shared/Breadcrumbs.astro";
+import RelatedPosts from "@components/post/RelatedPosts.astro";
+import CopyCodeButton from "@components/shared/buttons/CopyCodeButton.astro";
 import { getCollection } from "astro:content";
 import { render } from "astro:content";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
+  const allPosts = posts
+    .map((entry) => ({ ...entry.data, slug: entry.id }))
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+
   return posts.map((post) => ({
     params: { slug: post.id },
-    props: { post },
+    props: { post, allPosts },
   }));
 }
 
-const { post } = Astro.props;
+const { post, allPosts } = Astro.props;
 const { Content, headings } = await render(post);
 const toc = headings
   .filter((h) => h.depth === 2)
@@ -33,8 +40,13 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
 >
   <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
     <div class="max-w-[1100px] mx-auto">
-      <!-- Back link -->
-      <a href="/posts" class="back-link">&larr; Blog</a>
+      <Breadcrumbs
+        items={[
+          { label: "Inicio", href: "/" },
+          { label: "Blog", href: "/posts" },
+          { label: post.data.title },
+        ]}
+      />
 
       <!-- Hero -->
       <header class="hero">
@@ -83,16 +95,20 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
           </article>
         </div>
       </div>
+
+      <RelatedPosts
+        currentSlug={post.id}
+        currentTags={post.data.tags}
+        allPosts={allPosts}
+      />
     </div>
   </main>
+  <CopyCodeButton />
 </Layout>
 
 <style>
   @reference "@styles/global.css";
 
-  .back-link {
-    @apply text-text/30 hover:text-primary mb-10 inline-block text-sm no-underline transition-colors duration-200;
-  }
   .hero {
     @apply mb-12 max-w-3xl sm:mb-16;
   }
@@ -131,29 +147,6 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
   }
   .toc-mobile {
     @apply border-text/8 mb-10 border-b pb-8 lg:hidden;
-  }
-  .toc-label {
-    @apply text-text/25 mb-4 block text-[0.625rem] font-bold tracking-[0.22em] uppercase;
-  }
-  .toc-list {
-    @apply m-0 list-none space-y-1 p-0;
-  }
-  .toc-link {
-    @apply text-text/35 flex items-baseline gap-3 py-1.5 no-underline transition-colors duration-150;
-
-    &:hover {
-      @apply text-text;
-      .toc-num {
-        @apply text-primary;
-      }
-    }
-  }
-  .toc-num {
-    @apply text-primary/40 shrink-0 font-mono text-[0.625rem] font-bold tracking-wider tabular-nums;
-    transition: color 0.15s;
-  }
-  .toc-text {
-    @apply text-[0.8125rem] leading-snug;
   }
   .prose {
     @apply text-text/80 min-w-0 flex-1 text-[1.0625rem] leading-[1.85] sm:text-[1.125rem];
@@ -194,13 +187,13 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
       @apply bg-text/8 text-text/90 rounded px-1.5 py-0.5 font-mono text-[0.85em] tracking-tight;
     }
     :global(pre) {
-      @apply my-8 overflow-x-auto rounded-xl bg-[#0d0f14] p-5 text-[0.875rem] leading-relaxed text-[#cdd6f4];
+      @apply my-8 overflow-x-auto rounded-xl p-5 text-[0.875rem] leading-relaxed;
       box-shadow:
         0 0 0 1px rgba(255, 255, 255, 0.06),
         0 8px 32px -4px rgba(0, 0, 0, 0.35);
     }
     :global(pre code) {
-      @apply bg-transparent p-0 text-sm text-inherit;
+      @apply bg-transparent p-0;
     }
     :global(hr) {
       @apply bg-text/10 my-14 border-none;

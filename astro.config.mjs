@@ -8,11 +8,17 @@ export default defineConfig({
   site: "https://josetorronteras.es",
 
   image: {
-    domains: ["avatars.githubusercontent.com", "is1-ssl.mzstatic.com"],
+    domains: ["avatars.githubusercontent.com", "is1-ssl.mzstatic.com", "images.unsplash.com"],
   },
 
   vite: {
     plugins: [tailwindcss()],
+  },
+
+  markdown: {
+    shikiConfig: {
+      theme: "catppuccin-mocha",
+    },
   },
 
   integrations: [sitemap()],

@@ -19,18 +19,34 @@ const { title, description, image, articleDate } = Astro.props;
 <html lang="es">
   <head>
     <Head {title} {description} {image} {articleDate} />
+    <noscript>
+      <style>
+        .animate-fade-in {
+          opacity: 1 !important;
+        }
+      </style>
+    </noscript>
   </head>
   <body class="body">
     <div class="content">
       <Header />
       <div class="grow flex flex-col w-full">
-        <div class="grow flex flex-col">
+        <div class="grow flex flex-col animate-fade-in">
           <slot />
         </div>
         <Footer />
       </div>
     </div>
     <ScrollToTopButton />
+    <script is:inline>
+      if (document.fonts.status === "loaded") {
+        document.documentElement.classList.add("fonts-ready");
+      } else {
+        document.fonts.ready.then(function () {
+          document.documentElement.classList.add("fonts-ready");
+        });
+      }
+    </script>
   </body>
 </html>
 
