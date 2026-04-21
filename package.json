@@ -8,7 +8,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "content:link": "rm -rf src/data/content && ln -sf ../../../josetorronteras.es-content src/data/content",
+    "content:unlink": "unlink src/data/content && git restore src/data/content"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",

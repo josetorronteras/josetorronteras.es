@@ -52,7 +52,7 @@ const breadcrumbJsonLd = {
 <script
   is:inline
   type="application/ld+json"
-  set:html={JSON.stringify(breadcrumbJsonLd)}
+  set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c")}
 />
 
 <style>
@@ -68,10 +68,10 @@ const breadcrumbJsonLd = {
     @apply flex items-center gap-1;
   }
   .breadcrumb-sep {
-    @apply text-text/20;
+    @apply text-text/40;
   }
   .breadcrumb-link {
-    @apply text-text/30 hover:text-primary no-underline transition-colors duration-200;
+    @apply text-text/60 hover:text-primary no-underline transition-colors duration-200;
   }
   .breadcrumb-current {
     @apply text-text/60;

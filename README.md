@@ -22,17 +22,16 @@ cd josetorronteras.es
 The site content (data files and blog posts) lives in a separate private repository. Clone it next to this one and create a symlink so Astro can find it:
 
 ```bash
-# From the josetorronteras.es root
 git clone https://github.com/josetorronteras/josetorronteras.es-content.git ../josetorronteras.es-content
-ln -sf ../../../josetorronteras.es-content src/data/content
+npm run content:link
 ```
 
-> If you already have the content repo cloned at `../josetorronteras.es-content`, just run the `ln -sf` line.
+> If you already have the content repo cloned at `../josetorronteras.es-content`, just run `npm run content:link`.
 
 To remove the symlink:
 
 ```bash
-rm src/data/content
+npm run content:unlink
 ```
 
 3. Start the development environment with Docker:

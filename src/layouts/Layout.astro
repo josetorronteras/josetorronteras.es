@@ -39,13 +39,21 @@ const { title, description, image, articleDate } = Astro.props;
     </div>
     <ScrollToTopButton />
     <script is:inline>
-      if (document.fonts.status === "loaded") {
-        document.documentElement.classList.add("fonts-ready");
-      } else {
-        document.fonts.ready.then(function () {
+      (function () {
+        function markReady() {
           document.documentElement.classList.add("fonts-ready");
-        });
-      }
+        }
+        var fallback = setTimeout(markReady, 300);
+        if (document.fonts && document.fonts.status === "loaded") {
+          clearTimeout(fallback);
+          markReady();
+        } else if (document.fonts) {
+          document.fonts.ready.then(function () {
+            clearTimeout(fallback);
+            markReady();
+          });
+        }
+      })();
     </script>
 
 
