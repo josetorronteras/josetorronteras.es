@@ -2,8 +2,13 @@
 import Layout from "@layouts/Layout.astro";
 import PostsSection from "@components/PostsSection.astro";
 import ProjectsSection from "@components/ProjectsSection.astro";
-import { posts } from "@data/content/Posts";
+import { getCollection } from "astro:content";
 import { projects } from "@data/content/Projects";
+
+const entries = await getCollection("posts");
+const posts = entries
+  .map((entry) => ({ ...entry.data, slug: entry.id }))
+  .sort((a, b) => b.date.getTime() - a.date.getTime());
 ---
 
 <Layout>

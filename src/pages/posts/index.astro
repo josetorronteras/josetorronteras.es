@@ -1,0 +1,258 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+const entries = await getCollection("posts");
+const posts = entries
+  .map((entry) => ({ ...entry.data, slug: entry.id }))
+  .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+const allTags = [...new Set(posts.flatMap((p) => p.tags))];
+const [featured, ...rest] = posts;
+const RECENT_DAYS = 14;
+const isRecent =
+  featured &&
+  Date.now() - featured.date.getTime() < RECENT_DAYS * 24 * 60 * 60 * 1000;
+const dateLong = new Intl.DateTimeFormat("es-ES", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+const dateShort = new Intl.DateTimeFormat("es-ES", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+<Layout
+  title="Blog"
+  description="Artículos sobre desarrollo iOS, Swift, SwiftUI y todo lo relacionado con la creación de apps."
+>
+  <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
+    <div class="max-w-[1100px] mx-auto">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-top">
+          <h1 class="title">Blog</h1>
+          <p class="subtitle">
+            Escribo sobre <span class="highlight-text">Swift</span>, <span
+              class="highlight-text">SwiftUI</span
+            >, arquitectura y todo lo que aprendo construyendo apps para el
+            ecosistema Apple.
+          </p>
+        </div>
+        {
+          allTags.length > 0 && (
+            <nav class="tags-nav" aria-label="Filtrar por tag">
+              <span class="tags-label">Explorar</span>
+              <ul class="tags-list">
+                {allTags.map((tag) => (
+                  <li>
+                    <a
+                      href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
+                      class="tag-pill"
+                    >
+                      {tag}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )
+        }
+      </header>
+
+      <!-- Featured post -->
+      {
+        featured && (
+          <section class="featured" aria-label="Artículo destacado">
+            <a href={`/posts/${featured.slug}/`} class="featured-link">
+              <div class="featured-img-wrap">
+                <Image
+                  inferSize
+                  src={featured.image}
+                  alt={featured.imageAlt}
+                  widths={[400, 800, 1200]}
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  loading="eager"
+                  class="featured-img"
+                />
+                {isRecent && <span class="featured-badge">Nuevo</span>}
+              </div>
+              <div class="featured-body">
+                <time class="post-date">{dateLong.format(featured.date)}</time>
+                <h2 class="featured-title">{featured.title}</h2>
+                <p class="featured-excerpt">{featured.excerpt}</p>
+                <div class="featured-footer">
+                  <div class="post-tags">
+                    {featured.tags.map((tag) => (
+                      <span class="post-tag">{tag}</span>
+                    ))}
+                  </div>
+                  <span class="read-more">Leer artículo &rarr;</span>
+                </div>
+              </div>
+            </a>
+          </section>
+        )
+      }
+
+      <!-- Post list -->
+      {
+        rest.length > 0 && (
+          <section class="posts-section" aria-label="Todos los artículos">
+            <h2 class="section-heading">Más artículos</h2>
+            <ul class="post-list">
+              {rest.map((post) => (
+                <li>
+                  <a href={`/posts/${post.slug}/`} class="post-row">
+                    <div class="post-row-img-wrap">
+                      <Image
+                        inferSize
+                        src={post.image}
+                        alt={post.imageAlt}
+                        widths={[200, 400]}
+                        sizes="180px"
+                        loading="lazy"
+                        class="post-row-img"
+                      />
+                    </div>
+                    <div class="post-row-body">
+                      <time class="post-date">
+                        {dateShort.format(post.date)}
+                      </time>
+                      <h3 class="post-row-title">{post.title}</h3>
+                      <p class="post-row-excerpt">{post.excerpt}</p>
+                      <div class="post-tags">
+                        {post.tags.map((tag) => (
+                          <span class="post-tag">{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+    </div>
+  </main>
+</Layout>
+
+<style>
+  @reference "@styles/global.css";
+
+  .header {
+    @apply mb-12 sm:mb-16;
+  }
+  .header-top {
+    @apply mb-2;
+  }
+  .title {
+    @apply text-text mb-4 text-4xl font-bold tracking-tight sm:text-5xl;
+  }
+  .subtitle {
+    @apply text-text/50 max-w-xl text-base leading-relaxed sm:text-lg;
+  }
+  .tags-nav {
+    @apply flex flex-wrap items-center gap-3;
+  }
+  .tags-label {
+    @apply text-text/30 mr-1 text-xs font-semibold tracking-widest uppercase;
+  }
+  .tags-list {
+    @apply m-0 flex list-none flex-wrap gap-2 p-0;
+  }
+  .tag-pill {
+    @apply border-border/30 text-text/60 rounded-full border px-3 py-1.5 text-xs font-medium no-underline transition-all duration-200;
+    &:hover {
+      @apply border-primary text-primary bg-primary/10;
+    }
+  }
+  .featured {
+    @apply mb-14 sm:mb-20;
+  }
+  .featured-link {
+    @apply bg-background-alt border-border/20 grid gap-0 overflow-hidden rounded-2xl border no-underline transition-all duration-300 sm:grid-cols-2;
+    &:hover {
+      @apply border-primary/40 shadow-primary/5 shadow-2xl;
+      .featured-img {
+        transform: scale(1.04);
+      }
+      .read-more {
+        @apply text-primary;
+      }
+    }
+  }
+  .featured-img-wrap {
+    @apply relative overflow-hidden;
+    aspect-ratio: 4/3;
+  }
+  .featured-img {
+    @apply h-full w-full object-cover transition-transform duration-700 ease-out;
+  }
+  .featured-badge {
+    @apply bg-primary absolute top-4 left-4 rounded-md px-2.5 py-1 text-[0.6rem] font-bold tracking-[0.15em] text-white uppercase;
+  }
+  .featured-body {
+    @apply flex flex-col justify-center gap-3 p-6 sm:p-8 lg:p-10;
+  }
+  .featured-title {
+    @apply text-text text-xl leading-snug font-bold tracking-tight sm:text-2xl lg:text-3xl;
+  }
+  .featured-excerpt {
+    @apply text-text/50 line-clamp-3 text-sm leading-relaxed sm:text-base;
+  }
+  .featured-footer {
+    @apply mt-2 flex flex-wrap items-center justify-between gap-4;
+  }
+  .read-more {
+    @apply text-text/30 text-sm font-medium transition-colors duration-200;
+  }
+  .post-date {
+    @apply text-text/30 text-xs font-medium tracking-wider uppercase;
+  }
+  .post-tags {
+    @apply flex flex-wrap gap-1.5;
+  }
+  .post-tag {
+    @apply bg-primary/8 text-primary/70 rounded-full px-2 py-0.5 text-[0.65rem];
+  }
+  .posts-section {
+    @apply border-text/8 border-t pt-10;
+  }
+  .section-heading {
+    @apply text-text/40 mb-8 text-xs font-bold tracking-[0.2em] uppercase;
+  }
+  .post-list {
+    @apply m-0 list-none space-y-4 p-0;
+  }
+  .post-row {
+    @apply flex gap-5 rounded-xl border border-transparent p-3 no-underline transition-all duration-200 sm:gap-6 sm:p-4;
+    &:hover {
+      @apply bg-background-alt border-border/20;
+      .post-row-title {
+        @apply text-primary;
+      }
+    }
+  }
+  .post-row-img-wrap {
+    @apply w-24 shrink-0 overflow-hidden rounded-lg sm:w-36;
+    aspect-ratio: 16/10;
+  }
+  .post-row-img {
+    @apply h-full w-full object-cover;
+  }
+  .post-row-body {
+    @apply flex min-w-0 flex-col gap-1.5 py-0.5;
+  }
+  .post-row-title {
+    @apply text-text text-base leading-snug font-semibold transition-colors duration-200 sm:text-lg;
+  }
+  .post-row-excerpt {
+    @apply text-text/40 line-clamp-2 hidden text-sm leading-relaxed sm:block;
+  }
+</style>

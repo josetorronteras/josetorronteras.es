@@ -6,6 +6,7 @@
  * @property {string} image - (Optional) The main image URL for the post.
  * @property {string} imageAlt - (Optional) Alt text for the image.
  * @property {Date} date - The publication date of the post.
+ * @property {string[]} tags - List of tags associated with the post.
  */
 export type Post = {
   title: string;
@@ -14,4 +15,5 @@ export type Post = {
   image: string;
   imageAlt: string;
   date: Date;
+  tags: string[];
 };
