@@ -5,3 +5,5 @@ export const techIcons = {
   swift: SwiftIcon,
   python: PythonIcon,
 };
+
+export type TechIconKey = keyof typeof techIcons;
