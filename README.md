@@ -29,6 +29,12 @@ ln -sf ../../../josetorronteras.es-content/posts src/data/content/posts
 
 > If you already have the content repo cloned at `../josetorronteras.es-content`, just run the `ln -sf` line.
 
+To remove the symlink:
+
+```bash
+rm src/data/content/posts && git checkout src/data/content/posts
+```
+
 3. Start the development environment with Docker:
 
 ```bash
