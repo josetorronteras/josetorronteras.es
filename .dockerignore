@@ -44,5 +44,4 @@ LICENSE
 .vscode/
 
 # other configuration files
-.lycheeignore
 .prettierrc

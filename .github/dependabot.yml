@@ -4,8 +4,7 @@ updates:
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
-      interval: 'weekly'
-      day: 'sunday'
+      interval: 'monthly'
       time: '22:00'
     commit-message:
       prefix: 'deps'
@@ -25,8 +24,7 @@ updates:
   - package-ecosystem: 'docker'
     directory: '/'
     schedule:
-      interval: 'weekly'
-      day: 'sunday'
+      interval: 'monthly'
       time: '22:00'
     commit-message:
       prefix: 'deps'
@@ -46,8 +44,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'weekly'
-      day: 'sunday'
+      interval: 'monthly'
       time: '22:00'
     versioning-strategy: 'increase'
     commit-message:

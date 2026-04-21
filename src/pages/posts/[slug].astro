@@ -1,9 +1,10 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import TocList from "@components/post/TocList.astro";
+import PostToc from "@components/post/PostToc.astro";
 import Breadcrumbs from "@components/shared/Breadcrumbs.astro";
 import RelatedPosts from "@components/post/RelatedPosts.astro";
 import CopyCodeButton from "@components/shared/buttons/CopyCodeButton.astro";
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import { render } from "astro:content";
 
@@ -50,25 +51,40 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
 
       <!-- Hero -->
       <header class="hero">
-        <div class="hero-meta">
-          <time class="hero-date">{formattedDate}</time>
-          {
-            post.data.tags.length > 0 && (
-              <div class="hero-tags">
-                {post.data.tags.map((tag: string) => (
-                  <a
-                    href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
-                    class="hero-tag"
-                  >
-                    {tag}
-                  </a>
-                ))}
-              </div>
-            )
-          }
+        <div class="hero-content">
+          <div class="hero-text">
+            <div class="hero-meta">
+              <time class="hero-date">{formattedDate}</time>
+              {
+                post.data.tags.length > 0 && (
+                  <div class="hero-tags">
+                    {post.data.tags.map((tag: string) => (
+                      <a
+                        href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
+                        class="hero-tag"
+                      >
+                        {tag}
+                      </a>
+                    ))}
+                  </div>
+                )
+              }
+            </div>
+            <h1 class="hero-title">{post.data.title}</h1>
+            <p class="hero-excerpt">{post.data.excerpt}</p>
+          </div>
+          <div class="hero-img-wrap">
+            <Image
+              inferSize
+              src={post.data.image}
+              alt={post.data.imageAlt}
+              widths={[400, 800]}
+              sizes="(max-width: 768px) 100vw, 420px"
+              loading="eager"
+              class="hero-img"
+            />
+          </div>
         </div>
-        <h1 class="hero-title">{post.data.title}</h1>
-        <p class="hero-excerpt">{post.data.excerpt}</p>
       </header>
 
       <!-- Content -->
@@ -76,23 +92,23 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
         {
           toc.length > 0 && (
             <nav class="toc-mobile">
-              <TocList toc={toc} />
+              <PostToc toc={toc} />
             </nav>
           )
         }
         <div class="post-columns">
+          <article class="prose">
+            <Content />
+          </article>
           {
             toc.length > 0 && (
               <aside class="post-sidebar">
                 <div class="toc-sticky">
-                  <TocList toc={toc} />
+                  <PostToc toc={toc} />
                 </div>
               </aside>
             )
           }
-          <article class="prose">
-            <Content />
-          </article>
         </div>
       </div>
 
@@ -110,7 +126,20 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
   @reference "@styles/global.css";
 
   .hero {
-    @apply mb-12 max-w-3xl sm:mb-16;
+    @apply mb-12 sm:mb-16;
+  }
+  .hero-content {
+    @apply flex flex-col-reverse gap-8 md:flex-row md:items-center md:gap-12;
+  }
+  .hero-text {
+    @apply min-w-0 flex-1;
+  }
+  .hero-img-wrap {
+    @apply w-full overflow-hidden rounded-2xl md:w-[420px] md:shrink-0;
+    aspect-ratio: 4/3;
+  }
+  .hero-img {
+    @apply h-full w-full object-cover;
   }
   .hero-meta {
     @apply mb-5 flex flex-wrap items-center gap-3;
@@ -136,7 +165,7 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
     @apply border-text/8 border-t pt-10;
   }
   .post-columns {
-    @apply flex items-start gap-16;
+    @apply flex gap-16;
   }
   .post-sidebar {
     @apply hidden w-[200px] shrink-0 lg:block xl:w-[220px];
@@ -148,6 +177,7 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
   .toc-mobile {
     @apply border-text/8 mb-10 border-b pb-8 lg:hidden;
   }
+
   .prose {
     @apply text-text/80 min-w-0 flex-1 text-[1.0625rem] leading-[1.85] sm:text-[1.125rem];
 
