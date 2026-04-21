@@ -24,7 +24,7 @@ The blog posts live in a separate private repository. Clone it next to this one 
 ```bash
 # From the josetorronteras.es root
 git clone https://github.com/josetorronteras/josetorronteras.es-content.git ../josetorronteras.es-content
-ln -sf ../../../josetorronteras.es-content/posts src/data/content/posts
+ln -sf ../../../../josetorronteras.es-content/posts src/data/content/posts
 ```
 
 > If you already have the content repo cloned at `../josetorronteras.es-content`, just run the `ln -sf` line.
