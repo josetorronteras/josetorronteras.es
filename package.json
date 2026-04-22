@@ -9,8 +9,8 @@
     "astro": "astro",
     "check": "astro check",
     "format": "prettier . --write",
-    "content:link": "rm -rf src/data/content && ln -sf ../../../josetorronteras.es-content src/data/content",
-    "content:unlink": "unlink src/data/content && git restore src/data/content"
+    "content:link": "node scripts/link-content.js",
+    "content:unlink": "node scripts/unlink-content.js"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
