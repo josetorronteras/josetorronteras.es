@@ -14,12 +14,12 @@ const RECENT_DAYS = 14;
 const isRecent =
   featured &&
   Date.now() - featured.date.getTime() < RECENT_DAYS * 24 * 60 * 60 * 1000;
-const dateLong = new Intl.DateTimeFormat("es-ES", {
+const dateLong = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "long",
   day: "numeric",
 });
-const dateShort = new Intl.DateTimeFormat("es-ES", {
+const dateShort = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "short",
   day: "numeric",

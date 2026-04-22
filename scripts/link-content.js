@@ -20,26 +20,11 @@ if (stat) {
   if (stat.isSymbolicLink()) {
     rmSync(link);
   } else if (stat.isDirectory()) {
-    // Only remove if git tracks the path (safe to restore later)
     try {
-      const tracked = execSync(
-        "git ls-files --error-unmatch src/data/content",
-        { cwd: root, stdio: "pipe" },
-      );
+      execSync("git ls-files --error-unmatch src/data/content", { cwd: root, stdio: "pipe" });
     } catch {
-      // git ls-files returns non-zero if path is untracked
-      const result = execSync("git ls-files src/data/content", {
-        cwd: root,
-        stdio: "pipe",
-      })
-        .toString()
-        .trim();
-      if (!result) {
-        console.error(
-          "src/data/content is an untracked directory. Remove it manually first.",
-        );
-        process.exit(1);
-      }
+      console.error("src/data/content is an untracked directory. Remove it manually first.");
+      process.exit(1);
     }
     rmSync(link, { recursive: true });
   }

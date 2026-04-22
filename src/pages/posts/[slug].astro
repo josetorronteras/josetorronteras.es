@@ -9,24 +9,39 @@ import { getCollection } from "astro:content";
 import { render } from "astro:content";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("posts");
-  const allPosts = posts
+  const entries = await getCollection("posts");
+  const allPosts = entries
     .map((entry) => ({ ...entry.data, slug: entry.id }))
     .sort((a, b) => b.date.getTime() - a.date.getTime());
 
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post, allPosts },
-  }));
+  return entries.map((post) => {
+    const relatedPosts = allPosts
+      .filter((p) => p.slug !== post.id)
+      .map((p) => ({
+        ...p,
+        sharedTags: p.tags.filter((t) => post.data.tags.includes(t)).length,
+      }))
+      .filter((p) => p.sharedTags > 0)
+      .sort(
+        (a, b) =>
+          b.sharedTags - a.sharedTags || b.date.getTime() - a.date.getTime(),
+      )
+      .slice(0, 3);
+
+    return {
+      params: { slug: post.id },
+      props: { post, relatedPosts },
+    };
+  });
 }
 
-const { post, allPosts } = Astro.props;
+const { post, relatedPosts } = Astro.props;
 const { Content, headings } = await render(post);
 const toc = headings
   .filter((h) => h.depth === 2)
   .map((h, i) => ({ id: h.slug, text: h.text, index: i + 1 }));
 
-const formattedDate = post.data.date.toLocaleDateString("es-ES", {
+const formattedDate = post.data.date.toLocaleDateString("en-US", {
   year: "numeric",
   month: "long",
   day: "numeric",
@@ -112,11 +127,7 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
         </div>
       </div>
 
-      <RelatedPosts
-        currentSlug={post.id}
-        currentTags={post.data.tags}
-        allPosts={allPosts}
-      />
+      <RelatedPosts posts={relatedPosts} />
     </div>
   </main>
   <CopyCodeButton />

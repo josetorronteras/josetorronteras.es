@@ -3,27 +3,12 @@ import { Image } from "astro:assets";
 import type { Post } from "@data/types/Post";
 
 interface Props {
-  currentSlug: string;
-  currentTags: string[];
-  allPosts: Post[];
+  posts: Post[];
 }
 
-const { currentSlug, currentTags, allPosts } = Astro.props;
+const { posts: related } = Astro.props;
 
-const related = allPosts
-  .filter((p) => p.slug !== currentSlug)
-  .map((p) => {
-    const sharedTags = p.tags.filter((t) => currentTags.includes(t)).length;
-    return { ...p, sharedTags };
-  })
-  .filter((p) => p.sharedTags > 0)
-  .sort(
-    (a, b) =>
-      b.sharedTags - a.sharedTags || b.date.getTime() - a.date.getTime(),
-  )
-  .slice(0, 3);
-
-const dateFormatter = new Intl.DateTimeFormat("es-ES", {
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "short",
   day: "numeric",
@@ -54,7 +39,7 @@ const dateFormatter = new Intl.DateTimeFormat("es-ES", {
               </time>
               <h3 class="related-title">{post.title}</h3>
               <div class="related-tags">
-                {post.tags.map((tag) => (
+                {post.tags.slice(0, 3).map((tag) => (
                   <span class="related-tag">{tag}</span>
                 ))}
               </div>
