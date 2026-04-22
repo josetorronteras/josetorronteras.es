@@ -32,8 +32,8 @@ const dateFormatter = new Intl.DateTimeFormat("es-ES", {
 
 {
   related.length > 0 && (
-    <section class="related-section" aria-label="Artículos relacionados">
-      <h2 class="related-heading">Artículos relacionados</h2>
+    <section class="related-section" aria-label="Related posts">
+      <h2 class="related-heading">Related posts</h2>
       <div class="related-grid">
         {related.map((post) => (
           <a href={`/posts/${post.slug}/`} class="related-card">

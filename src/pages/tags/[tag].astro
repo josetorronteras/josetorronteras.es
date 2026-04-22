@@ -23,12 +23,12 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props;
 ---
 
-<Layout title={`${tag}`} description={`Artículos sobre ${tag}`}>
+<Layout title={`${tag}`} description={`Posts about ${tag}`}>
   <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
     <div class="max-w-[1100px] mx-auto">
       <Breadcrumbs
         items={[
-          { label: "Inicio", href: "/" },
+          { label: "Home", href: "/" },
           { label: "Blog", href: "/posts" },
           { label: tag },
         ]}
@@ -39,7 +39,7 @@ const { tag, posts } = Astro.props;
         <h1 class="title">{tag}</h1>
         <p class="count">
           {posts.length}
-          {posts.length === 1 ? "artículo" : "artículos"}
+          {posts.length === 1 ? \"post\" : \"posts\"}
         </p>
       </header>
 

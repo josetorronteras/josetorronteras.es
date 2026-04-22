@@ -59,8 +59,8 @@
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "copy-btn";
-    btn.textContent = "Copiar";
-    btn.setAttribute("aria-label", "Copiar código");
+    btn.textContent = "Copy";
+    btn.setAttribute("aria-label", "Copy code");
     wrapper.appendChild(btn);
 
     btn.addEventListener("click", async () => {
@@ -69,15 +69,15 @@
 
       try {
         await copyToClipboard(code.textContent || "");
-        btn.textContent = "¡Copiado!";
+        btn.textContent = "Copied!";
         btn.classList.add("copied");
         setTimeout(() => {
-          btn.textContent = "Copiar";
+          btn.textContent = "Copy";
           btn.classList.remove("copied");
         }, 2000);
       } catch {
         btn.textContent = "Error";
-        setTimeout(() => (btn.textContent = "Copiar"), 2000);
+        setTimeout(() => (btn.textContent = "Copy"), 2000);
       }
     });
   });

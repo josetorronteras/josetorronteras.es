@@ -28,10 +28,10 @@ const { title, description, image, articleDate } = Astro.props;
     </noscript>
   </head>
   <body class="body">
-    <div class="content">
+    <div class="content animate-fade-in">
       <Header />
       <div class="grow flex flex-col w-full">
-        <div class="grow flex flex-col animate-fade-in">
+        <div class="grow flex flex-col">
           <slot />
         </div>
         <Footer />
