@@ -1,0 +1,79 @@
+---
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+
+const siteUrl = Astro.site?.toString() || "https://josetorronteras.es";
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: item.label,
+    ...(item.href ? { item: new URL(item.href, siteUrl).toString() } : {}),
+  })),
+};
+---
+
+<nav aria-label="Breadcrumb" class="breadcrumbs">
+  <ol class="breadcrumb-list">
+    {
+      items.map((item, index) => (
+        <li class="breadcrumb-item">
+          {item.href ? (
+            <a href={item.href} class="breadcrumb-link">
+              {item.label}
+            </a>
+          ) : (
+            <span class="breadcrumb-current" aria-current="page">
+              {item.label}
+            </span>
+          )}
+          {index < items.length - 1 && (
+            <span class="breadcrumb-sep" aria-hidden="true">
+              /
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<script
+  is:inline
+  type="application/ld+json"
+  set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c")}
+/>
+
+<style>
+  @reference "@styles/global.css";
+
+  .breadcrumbs {
+    @apply mb-6;
+  }
+  .breadcrumb-list {
+    @apply m-0 flex list-none flex-wrap items-center gap-1 p-0 text-sm;
+  }
+  .breadcrumb-item {
+    @apply flex items-center gap-1;
+  }
+  .breadcrumb-sep {
+    @apply text-text/40;
+  }
+  .breadcrumb-link {
+    @apply text-text/60 hover:text-primary no-underline transition-colors duration-200;
+  }
+  .breadcrumb-current {
+    @apply text-text/60;
+  }
+</style>

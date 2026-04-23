@@ -8,7 +8,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "content:link": "node scripts/link-content.js",
+    "content:unlink": "node scripts/unlink-content.js"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",

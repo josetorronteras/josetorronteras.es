@@ -16,14 +16,21 @@ const { title, description, image, articleDate } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <Head {title} {description} {image} {articleDate} />
+    <noscript>
+      <style>
+        .animate-fade-in {
+          opacity: 1 !important;
+        }
+      </style>
+    </noscript>
   </head>
   <body class="body">
     <div class="content">
       <Header />
-      <div class="grow flex flex-col w-full">
+      <div class="grow flex flex-col w-full animate-fade-in">
         <div class="grow flex flex-col">
           <slot />
         </div>
@@ -31,6 +38,25 @@ const { title, description, image, articleDate } = Astro.props;
       </div>
     </div>
     <ScrollToTopButton />
+    <script is:inline>
+      (function () {
+        function markReady() {
+          document.documentElement.classList.add("fonts-ready");
+        }
+        var fallback = setTimeout(markReady, 300);
+        if (document.fonts && document.fonts.status === "loaded") {
+          clearTimeout(fallback);
+          markReady();
+        } else if (document.fonts) {
+          document.fonts.ready.then(function () {
+            clearTimeout(fallback);
+            markReady();
+          });
+        }
+      })();
+    </script>
+
+
   </body>
 </html>
 

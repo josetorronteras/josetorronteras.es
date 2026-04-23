@@ -14,12 +14,12 @@ const RECENT_DAYS = 14;
 const isRecent =
   featured &&
   Date.now() - featured.date.getTime() < RECENT_DAYS * 24 * 60 * 60 * 1000;
-const dateLong = new Intl.DateTimeFormat("es-ES", {
+const dateLong = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "long",
   day: "numeric",
 });
-const dateShort = new Intl.DateTimeFormat("es-ES", {
+const dateShort = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "short",
   day: "numeric",
@@ -28,7 +28,7 @@ const dateShort = new Intl.DateTimeFormat("es-ES", {
 
 <Layout
   title="Blog"
-  description="Artículos sobre desarrollo iOS, Swift, SwiftUI y todo lo relacionado con la creación de apps."
+  description="Articles about iOS development, Swift, SwiftUI and everything related to building apps."
 >
   <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
     <div class="max-w-[1100px] mx-auto">
@@ -37,16 +37,16 @@ const dateShort = new Intl.DateTimeFormat("es-ES", {
         <div class="header-top">
           <h1 class="title">Blog</h1>
           <p class="subtitle">
-            Escribo sobre <span class="highlight-text">Swift</span>, <span
+            I write about <span class="highlight-text">Swift</span>, <span
               class="highlight-text">SwiftUI</span
-            >, arquitectura y todo lo que aprendo construyendo apps para el
-            ecosistema Apple.
+            >, architecture and everything I learn building apps for the Apple
+            ecosystem.
           </p>
         </div>
         {
           allTags.length > 0 && (
-            <nav class="tags-nav" aria-label="Filtrar por tag">
-              <span class="tags-label">Explorar</span>
+            <nav class="tags-nav" aria-label="Filter by tag">
+              <span class="tags-label">Explore</span>
               <ul class="tags-list">
                 {allTags.map((tag) => (
                   <li>
@@ -67,7 +67,7 @@ const dateShort = new Intl.DateTimeFormat("es-ES", {
       <!-- Featured post -->
       {
         featured && (
-          <section class="featured" aria-label="Artículo destacado">
+          <section class="featured" aria-label="Featured post">
             <a href={`/posts/${featured.slug}/`} class="featured-link">
               <div class="featured-img-wrap">
                 <Image
@@ -79,7 +79,7 @@ const dateShort = new Intl.DateTimeFormat("es-ES", {
                   loading="eager"
                   class="featured-img"
                 />
-                {isRecent && <span class="featured-badge">Nuevo</span>}
+                {isRecent && <span class="featured-badge">New</span>}
               </div>
               <div class="featured-body">
                 <time class="post-date">{dateLong.format(featured.date)}</time>
@@ -91,7 +91,7 @@ const dateShort = new Intl.DateTimeFormat("es-ES", {
                       <span class="post-tag">{tag}</span>
                     ))}
                   </div>
-                  <span class="read-more">Leer artículo &rarr;</span>
+                  <span class="read-more">Read post &rarr;</span>
                 </div>
               </div>
             </a>
@@ -102,8 +102,8 @@ const dateShort = new Intl.DateTimeFormat("es-ES", {
       <!-- Post list -->
       {
         rest.length > 0 && (
-          <section class="posts-section" aria-label="Todos los artículos">
-            <h2 class="section-heading">Más artículos</h2>
+          <section class="posts-section" aria-label="All posts">
+            <h2 class="section-heading">More posts</h2>
             <ul class="post-list">
               {rest.map((post) => (
                 <li>

@@ -1,25 +1,47 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import PostToc from "@components/post/PostToc.astro";
+import Breadcrumbs from "@components/shared/Breadcrumbs.astro";
+import RelatedPosts from "@components/post/RelatedPosts.astro";
+import CopyCodeButton from "@components/shared/buttons/CopyCodeButton.astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import { render } from "astro:content";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("posts");
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+  const entries = await getCollection("posts");
+  const allPosts = entries
+    .map((entry) => ({ ...entry.data, slug: entry.id }))
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+  return entries.map((post) => {
+    const relatedPosts = allPosts
+      .filter((p) => p.slug !== post.id)
+      .map((p) => ({
+        ...p,
+        sharedTags: p.tags.filter((t) => post.data.tags.includes(t)).length,
+      }))
+      .filter((p) => p.sharedTags > 0)
+      .sort(
+        (a, b) =>
+          b.sharedTags - a.sharedTags || b.date.getTime() - a.date.getTime(),
+      )
+      .slice(0, 3);
+
+    return {
+      params: { slug: post.id },
+      props: { post, relatedPosts },
+    };
+  });
 }
 
-const { post } = Astro.props;
+const { post, relatedPosts } = Astro.props;
 const { Content, headings } = await render(post);
 const toc = headings
   .filter((h) => h.depth === 2)
   .map((h, i) => ({ id: h.slug, text: h.text, index: i + 1 }));
 
-const formattedDate = post.data.date.toLocaleDateString("es-ES", {
+const formattedDate = post.data.date.toLocaleDateString("en-US", {
   year: "numeric",
   month: "long",
   day: "numeric",
@@ -34,8 +56,13 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
 >
   <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
     <div class="max-w-[1100px] mx-auto">
-      <!-- Back link -->
-      <a href="/posts" class="back-link">&larr; Blog</a>
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Blog", href: "/posts" },
+          { label: post.data.title },
+        ]}
+      />
 
       <!-- Hero -->
       <header class="hero">
@@ -99,16 +126,16 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
           }
         </div>
       </div>
+
+      <RelatedPosts posts={relatedPosts} />
     </div>
   </main>
+  <CopyCodeButton />
 </Layout>
 
 <style>
   @reference "@styles/global.css";
 
-  .back-link {
-    @apply text-text/30 hover:text-primary mb-10 inline-block text-sm no-underline transition-colors duration-200;
-  }
   .hero {
     @apply mb-12 sm:mb-16;
   }
@@ -201,13 +228,13 @@ const formattedDate = post.data.date.toLocaleDateString("es-ES", {
       @apply bg-text/8 text-text/90 rounded px-1.5 py-0.5 font-mono text-[0.85em] tracking-tight;
     }
     :global(pre) {
-      @apply my-8 overflow-x-auto rounded-xl bg-[#0d0f14] p-5 text-[0.875rem] leading-relaxed text-[#cdd6f4];
+      @apply my-8 overflow-x-auto rounded-xl p-5 text-[0.875rem] leading-relaxed;
       box-shadow:
         0 0 0 1px rgba(255, 255, 255, 0.06),
         0 8px 32px -4px rgba(0, 0, 0, 0.35);
     }
     :global(pre code) {
-      @apply bg-transparent p-0 text-sm text-inherit;
+      @apply bg-transparent p-0;
     }
     :global(hr) {
       @apply bg-text/10 my-14 border-none;

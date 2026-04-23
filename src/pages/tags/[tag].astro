@@ -1,5 +1,6 @@
 ---
 import Layout from "@layouts/Layout.astro";
+import Breadcrumbs from "@components/shared/Breadcrumbs.astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
@@ -22,17 +23,23 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props;
 ---
 
-<Layout title={`${tag}`} description={`Artículos sobre ${tag}`}>
+<Layout title={`${tag}`} description={`Posts about ${tag}`}>
   <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
     <div class="max-w-[1100px] mx-auto">
-      <a href="/posts" class="back-link">&larr; Blog</a>
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Blog", href: "/posts" },
+          { label: tag },
+        ]}
+      />
 
       <header class="header">
         <span class="eyebrow">Tag</span>
         <h1 class="title">{tag}</h1>
         <p class="count">
           {posts.length}
-          {posts.length === 1 ? "artículo" : "artículos"}
+          {posts.length === 1 ? "post" : "posts"}
         </p>
       </header>
 
@@ -82,12 +89,6 @@ const { tag, posts } = Astro.props;
 <style>
   @reference "@styles/global.css";
 
-  .page {
-    @apply px-6 py-10 sm:px-8 sm:py-16 md:py-24;
-  }
-  .back-link {
-    @apply text-text/30 hover:text-primary mb-10 inline-block text-sm no-underline transition-colors duration-200;
-  }
   .header {
     @apply border-text/8 mb-12 border-b pb-8;
   }

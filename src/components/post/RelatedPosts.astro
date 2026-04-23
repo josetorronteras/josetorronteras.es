@@ -1,0 +1,100 @@
+---
+import { Image } from "astro:assets";
+import type { Post } from "@data/types/Post";
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts: related } = Astro.props;
+
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+{
+  related.length > 0 && (
+    <section class="related-section" aria-label="Related posts">
+      <h2 class="related-heading">Related posts</h2>
+      <div class="related-grid">
+        {related.map((post) => (
+          <a href={`/posts/${post.slug}/`} class="related-card">
+            <div class="related-img-wrap">
+              <Image
+                inferSize
+                src={post.image}
+                alt={post.imageAlt}
+                widths={[200, 400]}
+                sizes="(max-width: 640px) 100vw, 33vw"
+                loading="lazy"
+                class="related-img"
+              />
+            </div>
+            <div class="related-body">
+              <time class="related-date" datetime={post.date.toISOString()}>
+                {dateFormatter.format(post.date)}
+              </time>
+              <h3 class="related-title">{post.title}</h3>
+              <div class="related-tags">
+                {post.tags.slice(0, 3).map((tag) => (
+                  <span class="related-tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  @reference "@styles/global.css";
+
+  .related-section {
+    @apply border-text/8 mt-16 border-t pt-12;
+  }
+  .related-heading {
+    @apply text-text/40 mb-8 text-xs font-bold tracking-[0.2em] uppercase;
+  }
+  .related-grid {
+    @apply grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3;
+  }
+  .related-card {
+    @apply bg-background-alt border-border/20 flex flex-col overflow-hidden rounded-xl border no-underline transition-all duration-200;
+    &:hover {
+      @apply border-primary/40;
+      .related-title {
+        @apply text-primary;
+      }
+      .related-img {
+        transform: scale(1.04);
+      }
+    }
+  }
+  .related-img-wrap {
+    @apply overflow-hidden;
+    aspect-ratio: 16/9;
+  }
+  .related-img {
+    @apply h-full w-full object-cover transition-transform duration-500 ease-out;
+  }
+  .related-body {
+    @apply flex flex-col gap-2 p-4;
+  }
+  .related-date {
+    @apply text-text/30 text-xs font-medium tracking-wider uppercase;
+  }
+  .related-title {
+    @apply text-text text-base leading-snug font-semibold transition-colors duration-200;
+  }
+  .related-tags {
+    @apply flex flex-wrap gap-1.5;
+  }
+  .related-tag {
+    @apply bg-primary/8 text-primary/70 rounded-full px-2 py-0.5 text-[0.65rem];
+  }
+</style>
