@@ -6,6 +6,10 @@ import PostRow from "@components/post/PostRow.astro";
 import Pagination from "@components/shared/Pagination.astro";
 import { getCollection } from "astro:content";
 import type { GetStaticPathsOptions } from "astro";
+import { POSTS_PER_PAGE } from "@data/config";
+
+const BASE_DESCRIPTION =
+  "Articles about iOS development, Swift, SwiftUI and everything related to building apps.";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const entries = await getCollection("posts");
@@ -19,7 +23,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
     }
   }
   const allTags = [...tagMap.values()];
-  return paginate(allPosts, { props: { allTags }, pageSize: 7 });
+  return paginate(allPosts, { props: { allTags }, pageSize: POSTS_PER_PAGE });
 }
 
 const { page, allTags } = Astro.props;
@@ -27,15 +31,10 @@ const { page, allTags } = Astro.props;
 const isFirstPage = page.currentPage === 1;
 const pageTitle = isFirstPage ? "Blog" : `Blog — Page ${page.currentPage}`;
 const pageDescription = isFirstPage
-  ? "Articles about iOS development, Swift, SwiftUI and everything related to building apps."
-  : `Articles about iOS development, Swift, SwiftUI and everything related to building apps. — Page ${page.currentPage}`;
+  ? BASE_DESCRIPTION
+  : `${BASE_DESCRIPTION} — Page ${page.currentPage}`;
 const featured = isFirstPage ? page.data[0] : null;
 const rest = isFirstPage ? page.data.slice(1) : page.data;
-
-const RECENT_DAYS = 14;
-const isRecent =
-  featured != null &&
-  Date.now() - featured.date.getTime() < RECENT_DAYS * 24 * 60 * 60 * 1000;
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -43,10 +42,16 @@ const isRecent =
   {page.url.next && <link slot="head" rel="next" href={page.url.next} />}
   <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
     <div class="max-w-[1100px] mx-auto">
-      {isFirstPage && <PostsHeader tags={allTags} />}
-      {isFirstPage && featured != null && (
-        <PostFeatured post={featured} isRecent={isRecent} />
+      {isFirstPage && (
+        <PostsHeader title="Blog" tags={allTags}>
+          <Fragment slot="subtitle">
+            I write about <span class="highlight-text">Swift</span>,{" "}
+            <span class="highlight-text">SwiftUI</span>, architecture and
+            everything I learn building apps for the Apple ecosystem.
+          </Fragment>
+        </PostsHeader>
       )}
+      {isFirstPage && featured != null && <PostFeatured post={featured} />}
       {
         rest.length > 0 && (
           <section class="posts-section" aria-label="All posts">

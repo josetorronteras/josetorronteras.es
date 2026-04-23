@@ -1,18 +1,17 @@
 ---
 interface Props {
+  title: string;
   tags: string[];
 }
 
-const { tags } = Astro.props;
+const { title, tags } = Astro.props;
 ---
 
 <header class="header">
   <div class="header-top">
-    <h1 class="title">Blog</h1>
+    <h1 class="title">{title}</h1>
     <p class="subtitle">
-      I write about <span class="highlight-text">Swift</span>,{" "}
-      <span class="highlight-text">SwiftUI</span>, architecture and everything I
-      learn building apps for the Apple ecosystem.
+      <slot name="subtitle" />
     </p>
   </div>
   {

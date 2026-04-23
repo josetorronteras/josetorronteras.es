@@ -5,29 +5,45 @@ import PostRow from "@components/post/PostRow.astro";
 import Pagination from "@components/shared/Pagination.astro";
 import { getCollection } from "astro:content";
 import type { GetStaticPathsOptions } from "astro";
+import { POSTS_PER_PAGE } from "@data/config";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const entries = await getCollection("posts");
-  const allTags = [...new Set(entries.flatMap((post) => post.data.tags || []))];
+  const tagMap = new Map<string, string>();
+  for (const entry of entries) {
+    for (const tag of entry.data.tags ?? []) {
+      if (!tagMap.has(tag.toLowerCase())) tagMap.set(tag.toLowerCase(), tag);
+    }
+  }
 
-  return allTags.flatMap((tag) => {
+  return [...tagMap.entries()].flatMap(([slug, tag]) => {
     const posts = entries
-      .filter((post) => post.data.tags?.includes(tag))
+      .filter((post) =>
+        post.data.tags?.some((t) => t.toLowerCase() === slug),
+      )
       .map((entry) => ({ ...entry.data, slug: entry.id }))
       .sort((a, b) => b.date.getTime() - a.date.getTime());
 
     return paginate(posts, {
-      params: { tag: tag.toLowerCase() },
+      params: { tag: slug },
       props: { tag },
-      pageSize: 7,
+      pageSize: POSTS_PER_PAGE,
     });
   });
 }
 
 const { page, tag } = Astro.props;
+
+const isFirstPage = page.currentPage === 1;
+const pageTitle = isFirstPage ? tag : `${tag} — Page ${page.currentPage}`;
+const pageDescription = isFirstPage
+  ? `Posts about ${tag}`
+  : `Posts about ${tag} — Page ${page.currentPage}`;
 ---
 
-<Layout title={tag} description={`Posts about ${tag}`}>
+<Layout title={pageTitle} description={pageDescription}>
+  {page.url.prev && <link slot="head" rel="prev" href={page.url.prev} />}
+  {page.url.next && <link slot="head" rel="next" href={page.url.next} />}
   <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
     <div class="max-w-[1100px] mx-auto">
       <Breadcrumbs

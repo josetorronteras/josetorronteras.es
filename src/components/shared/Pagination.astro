@@ -19,7 +19,9 @@ const { currentPage, lastPage, prevUrl, nextUrl } = Astro.props;
       ) : (
         <span class="page-btn page-btn--disabled" aria-disabled="true">&larr; Previous</span>
       )}
-      <span class="page-info">{currentPage} / {lastPage}</span>
+      <span class="page-info" aria-label={`Page ${currentPage} of ${lastPage}`}>
+        {currentPage} / {lastPage}
+      </span>
       {nextUrl ? (
         <a href={nextUrl} class="page-btn">
           Next &rarr;

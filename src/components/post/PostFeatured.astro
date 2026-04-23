@@ -1,19 +1,17 @@
 ---
 import { Image } from "astro:assets";
 import type { Post } from "@data/types/Post";
+import { dateLong } from "@lib/date";
+import { RECENT_DAYS } from "@data/config";
 
 interface Props {
   post: Post;
-  isRecent?: boolean;
 }
 
-const { post, isRecent = false } = Astro.props;
+const { post } = Astro.props;
 
-const dateLong = new Intl.DateTimeFormat("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+const isRecent =
+  Date.now() - post.date.getTime() < RECENT_DAYS * 24 * 60 * 60 * 1000;
 ---
 
 <section class="featured" aria-label="Featured post">
