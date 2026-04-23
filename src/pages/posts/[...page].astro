@@ -2,18 +2,30 @@
 import Layout from "@layouts/Layout.astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+import type { GetStaticPathsOptions } from "astro";
 
-const entries = await getCollection("posts");
-const posts = entries
-  .map((entry) => ({ ...entry.data, slug: entry.id }))
-  .sort((a, b) => b.date.getTime() - a.date.getTime());
+const PAGE_SIZE = 7;
 
-const allTags = [...new Set(posts.flatMap((p) => p.tags))];
-const [featured, ...rest] = posts;
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const entries = await getCollection("posts");
+  const allPosts = entries
+    .map((entry) => ({ ...entry.data, slug: entry.id }))
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+  const allTags = [...new Set(allPosts.flatMap((p) => p.tags))];
+  return paginate(allPosts, { props: { allTags }, pageSize: PAGE_SIZE });
+}
+
+const { page, allTags } = Astro.props;
+const posts: typeof page.data = page.data;
+
+const isFirstPage = page.currentPage === 1;
+const [featured, ...rest] = isFirstPage ? posts : [null, ...posts];
+
 const RECENT_DAYS = 14;
 const isRecent =
   featured &&
   Date.now() - featured.date.getTime() < RECENT_DAYS * 24 * 60 * 60 * 1000;
+
 const dateLong = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "long",
@@ -32,41 +44,42 @@ const dateShort = new Intl.DateTimeFormat("en-US", {
 >
   <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
     <div class="max-w-[1100px] mx-auto">
-      <!-- Header -->
-      <header class="header">
-        <div class="header-top">
-          <h1 class="title">Blog</h1>
-          <p class="subtitle">
-            I write about <span class="highlight-text">Swift</span>, <span
-              class="highlight-text">SwiftUI</span
-            >, architecture and everything I learn building apps for the Apple
-            ecosystem.
-          </p>
-        </div>
-        {
-          allTags.length > 0 && (
-            <nav class="tags-nav" aria-label="Filter by tag">
-              <span class="tags-label">Explore</span>
-              <ul class="tags-list">
-                {allTags.map((tag) => (
-                  <li>
-                    <a
-                      href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
-                      class="tag-pill"
-                    >
-                      {tag}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          )
-        }
-      </header>
-
-      <!-- Featured post -->
+      <!-- Header (only on first page) -->
       {
-        featured && (
+        isFirstPage && (
+          <header class="header">
+            <div class="header-top">
+              <h1 class="title">Blog</h1>
+              <p class="subtitle">
+                I write about <span class="highlight-text">Swift</span>,{" "}
+                <span class="highlight-text">SwiftUI</span>, architecture and
+                everything I learn building apps for the Apple ecosystem.
+              </p>
+            </div>
+            {allTags.length > 0 && (
+              <nav class="tags-nav" aria-label="Filter by tag">
+                <span class="tags-label">Explore</span>
+                <ul class="tags-list">
+                  {allTags.map((tag) => (
+                    <li>
+                      <a
+                        href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
+                        class="tag-pill"
+                      >
+                        {tag}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+          </header>
+        )
+      }
+
+      <!-- Featured post (only on first page) -->
+      {
+        isFirstPage && featured && (
           <section class="featured" aria-label="Featured post">
             <a href={`/posts/${featured.slug}/`} class="featured-link">
               <div class="featured-img-wrap">
@@ -103,7 +116,9 @@ const dateShort = new Intl.DateTimeFormat("en-US", {
       {
         rest.length > 0 && (
           <section class="posts-section" aria-label="All posts">
-            <h2 class="section-heading">More posts</h2>
+            <h2 class="section-heading">
+              {isFirstPage ? "More posts" : "Posts"}
+            </h2>
             <ul class="post-list">
               {rest.map((post) => (
                 <li>
@@ -136,6 +151,30 @@ const dateShort = new Intl.DateTimeFormat("en-US", {
               ))}
             </ul>
           </section>
+        )
+      }
+      <!-- Pagination -->
+      {
+        page.lastPage > 1 && (
+          <nav class="pagination" aria-label="Pagination">
+            {page.url.prev ? (
+              <a href={page.url.prev} class="page-btn">
+                &larr; Previous
+              </a>
+            ) : (
+              <span class="page-btn page-btn--disabled">&larr; Previous</span>
+            )}
+            <span class="page-info">
+              {page.currentPage} / {page.lastPage}
+            </span>
+            {page.url.next ? (
+              <a href={page.url.next} class="page-btn">
+                Next &rarr;
+              </a>
+            ) : (
+              <span class="page-btn page-btn--disabled">Next &rarr;</span>
+            )}
+          </nav>
         )
       }
     </div>
@@ -254,5 +293,23 @@ const dateShort = new Intl.DateTimeFormat("en-US", {
   }
   .post-row-excerpt {
     @apply text-text/40 line-clamp-2 hidden text-sm leading-relaxed sm:block;
+  }
+  .pagination {
+    @apply border-text/8 mt-12 flex items-center justify-between border-t pt-8;
+  }
+  .page-btn {
+    @apply border-border/30 text-text/60 rounded-lg border px-4 py-2 text-sm font-medium no-underline transition-all duration-200;
+    &:hover {
+      @apply border-primary text-primary bg-primary/10;
+    }
+  }
+  .page-btn--disabled {
+    @apply border-border/10 text-text/20 cursor-default;
+    &:hover {
+      @apply border-border/10 bg-transparent text-text/20;
+    }
+  }
+  .page-info {
+    @apply text-text/30 text-sm;
   }
 </style>
