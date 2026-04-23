@@ -7,6 +7,7 @@ import CopyCodeButton from "@components/shared/buttons/CopyCodeButton.astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import { render } from "astro:content";
+import { dateLong } from "@lib/date";
 
 export async function getStaticPaths() {
   const entries = await getCollection("posts");
@@ -41,11 +42,7 @@ const toc = headings
   .filter((h) => h.depth === 2)
   .map((h, i) => ({ id: h.slug, text: h.text, index: i + 1 }));
 
-const formattedDate = post.data.date.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+const formattedDate = dateLong.format(post.data.date);
 ---
 
 <Layout

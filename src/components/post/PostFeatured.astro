@@ -1,0 +1,97 @@
+---
+import { Image } from "astro:assets";
+import type { Post } from "@data/types/Post";
+import { dateLong } from "@lib/date";
+import { RECENT_DAYS } from "@data/config";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+
+const isRecent =
+  Date.now() - post.date.getTime() < RECENT_DAYS * 24 * 60 * 60 * 1000;
+---
+
+<section class="featured" aria-label="Featured post">
+  <a href={`/posts/${post.slug}/`} class="featured-link">
+    <div class="featured-img-wrap">
+      <Image
+        inferSize
+        src={post.image}
+        alt={post.imageAlt}
+        widths={[400, 800, 1200]}
+        sizes="(max-width: 640px) 100vw, 50vw"
+        loading="eager"
+        class="featured-img"
+      />
+      {isRecent && <span class="featured-badge">New</span>}
+    </div>
+    <div class="featured-body">
+      <time class="post-date">{dateLong.format(post.date)}</time>
+      <h2 class="featured-title">{post.title}</h2>
+      <p class="featured-excerpt">{post.excerpt}</p>
+      <div class="featured-footer">
+        <div class="post-tags">
+          {post.tags.map((tag) => <span class="post-tag">{tag}</span>)}
+        </div>
+        <span class="read-more">Read post &rarr;</span>
+      </div>
+    </div>
+  </a>
+</section>
+
+<style>
+  @reference "@styles/global.css";
+
+  .featured {
+    @apply mb-14 sm:mb-20;
+  }
+  .featured-link {
+    @apply bg-background-alt border-border/20 grid gap-0 overflow-hidden rounded-2xl border no-underline transition-all duration-300 sm:grid-cols-2;
+    &:hover {
+      @apply border-primary/40 shadow-primary/5 shadow-2xl;
+      .featured-img {
+        transform: scale(1.04);
+      }
+      .read-more {
+        @apply text-primary;
+      }
+    }
+  }
+  .featured-img-wrap {
+    @apply relative overflow-hidden;
+    aspect-ratio: 4/3;
+  }
+  .featured-img {
+    @apply h-full w-full object-cover transition-transform duration-700 ease-out;
+  }
+  .featured-badge {
+    @apply bg-primary absolute top-4 left-4 rounded-md px-2.5 py-1 text-[0.6rem] font-bold tracking-[0.15em] text-white uppercase;
+  }
+  .featured-body {
+    @apply flex flex-col justify-center gap-3 p-6 sm:p-8 lg:p-10;
+  }
+  .featured-title {
+    @apply text-text text-xl leading-snug font-bold tracking-tight sm:text-2xl lg:text-3xl;
+  }
+  .featured-excerpt {
+    @apply text-text/50 line-clamp-3 text-sm leading-relaxed sm:text-base;
+  }
+  .featured-footer {
+    @apply mt-2 flex flex-wrap items-center justify-between gap-4;
+  }
+  .read-more {
+    @apply text-text/30 text-sm font-medium transition-colors duration-200;
+  }
+  .post-date {
+    @apply text-text/30 text-xs font-medium tracking-wider uppercase;
+  }
+  .post-tags {
+    @apply flex flex-wrap gap-1.5;
+  }
+  .post-tag {
+    @apply bg-primary/8 text-primary/70 rounded-full px-2 py-0.5 text-[0.65rem];
+  }
+</style>

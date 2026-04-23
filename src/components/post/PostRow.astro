@@ -1,0 +1,82 @@
+---
+import { Image } from "astro:assets";
+import type { Post } from "@data/types/Post";
+import { dateShort } from "@lib/date";
+
+interface Props {
+  post: Post;
+  activeTag?: string;
+}
+
+const { post, activeTag } = Astro.props;
+---
+
+<a href={`/posts/${post.slug}/`} class="post-row">
+  <div class="post-row-img-wrap">
+    <Image
+      inferSize
+      src={post.image}
+      alt={post.imageAlt}
+      widths={[200, 400]}
+      sizes="(max-width: 640px) 96px, 144px"
+      loading="lazy"
+      class="post-row-img"
+    />
+  </div>
+  <div class="post-row-body">
+    <time class="post-date">{dateShort.format(post.date)}</time>
+    <h3 class="post-row-title">{post.title}</h3>
+    <p class="post-row-excerpt">{post.excerpt}</p>
+    <div class="post-tags">
+      {
+        post.tags.map((tag) => (
+          <span class:list={["post-tag", { active: tag === activeTag }]}>
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</a>
+
+<style>
+  @reference "@styles/global.css";
+
+  .post-row {
+    @apply flex gap-5 rounded-xl border border-transparent p-3 no-underline transition-all duration-200 sm:gap-6 sm:p-4;
+    &:hover {
+      @apply bg-background-alt border-border/20;
+      .post-row-title {
+        @apply text-primary;
+      }
+    }
+  }
+  .post-row-img-wrap {
+    @apply w-24 shrink-0 overflow-hidden rounded-lg sm:w-36;
+    aspect-ratio: 16/10;
+  }
+  .post-row-img {
+    @apply h-full w-full object-cover;
+  }
+  .post-row-body {
+    @apply flex min-w-0 flex-col gap-1.5 py-0.5;
+  }
+  .post-date {
+    @apply text-text/30 text-xs font-medium tracking-wider uppercase;
+  }
+  .post-row-title {
+    @apply text-text text-base leading-snug font-semibold transition-colors duration-200 sm:text-lg;
+  }
+  .post-row-excerpt {
+    @apply text-text/40 line-clamp-2 hidden text-sm leading-relaxed sm:block;
+  }
+  .post-tags {
+    @apply flex flex-wrap gap-1.5;
+  }
+  .post-tag {
+    @apply bg-primary/8 text-primary/70 rounded-full px-2 py-0.5 text-[0.65rem];
+    &.active {
+      @apply bg-primary/20 text-primary;
+    }
+  }
+</style>

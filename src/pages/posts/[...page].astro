@@ -1,0 +1,95 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PostsHeader from "@components/post/PostsHeader.astro";
+import PostFeatured from "@components/post/PostFeatured.astro";
+import PostRow from "@components/post/PostRow.astro";
+import Pagination from "@components/shared/Pagination.astro";
+import { getCollection } from "astro:content";
+import type { GetStaticPathsOptions } from "astro";
+import { POSTS_PER_PAGE } from "@data/config";
+
+const BASE_DESCRIPTION =
+  "Articles about iOS development, Swift, SwiftUI and everything related to building apps.";
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const entries = await getCollection("posts");
+  const allPosts = entries
+    .map((entry) => ({ ...entry.data, slug: entry.id }))
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+  const tagMap = new Map<string, string>();
+  for (const post of allPosts) {
+    for (const tag of post.tags) {
+      if (!tagMap.has(tag.toLowerCase())) tagMap.set(tag.toLowerCase(), tag);
+    }
+  }
+  const allTags = [...tagMap.values()];
+  return paginate(allPosts, { props: { allTags }, pageSize: POSTS_PER_PAGE });
+}
+
+const { page, allTags } = Astro.props;
+
+const isFirstPage = page.currentPage === 1;
+const pageTitle = isFirstPage ? "Blog" : `Blog — Page ${page.currentPage}`;
+const pageDescription = isFirstPage
+  ? BASE_DESCRIPTION
+  : `${BASE_DESCRIPTION} — Page ${page.currentPage}`;
+const featured = isFirstPage ? page.data[0] : null;
+const rest = isFirstPage ? page.data.slice(1) : page.data;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  {page.url.prev && <link slot="head" rel="prev" href={page.url.prev} />}
+  {page.url.next && <link slot="head" rel="next" href={page.url.next} />}
+  <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
+    <div class="max-w-[1100px] mx-auto">
+      {
+        isFirstPage && (
+          <PostsHeader title="Blog" tags={allTags}>
+            <Fragment slot="subtitle">
+              I write about <span class="highlight-text">Swift</span>,{" "}
+              <span class="highlight-text">SwiftUI</span>, architecture and
+              everything I learn building apps for the Apple ecosystem.
+            </Fragment>
+          </PostsHeader>
+        )
+      }
+      {isFirstPage && featured != null && <PostFeatured post={featured} />}
+      {
+        rest.length > 0 && (
+          <section class="posts-section" aria-label="All posts">
+            <h2 class="section-heading">
+              {isFirstPage ? "More posts" : "Posts"}
+            </h2>
+            <ul class="post-list">
+              {rest.map((post) => (
+                <li>
+                  <PostRow post={post} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+      <Pagination
+        currentPage={page.currentPage}
+        lastPage={page.lastPage}
+        prevUrl={page.url.prev}
+        nextUrl={page.url.next}
+      />
+    </div>
+  </main>
+</Layout>
+
+<style>
+  @reference "@styles/global.css";
+
+  .posts-section {
+    @apply border-text/8 border-t pt-10;
+  }
+  .section-heading {
+    @apply text-text/40 mb-8 text-xs font-bold tracking-[0.2em] uppercase;
+  }
+  .post-list {
+    @apply m-0 list-none space-y-4 p-0;
+  }
+</style>

@@ -9,7 +9,8 @@
       "@layouts/*": ["./src/layouts/*"],
       "@styles/*": ["./src/styles/*"],
       "@icons/*": ["./src/components/shared/icons/*"],
-      "@data/*": ["./src/data/*"]
+      "@data/*": ["./src/data/*"],
+      "@lib/*": ["./src/lib/*"]
     }
   }
 }
