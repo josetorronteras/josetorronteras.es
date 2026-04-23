@@ -18,9 +18,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 
   return [...tagMap.entries()].flatMap(([slug, tag]) => {
     const posts = entries
-      .filter((post) =>
-        post.data.tags?.some((t) => t.toLowerCase() === slug),
-      )
+      .filter((post) => post.data.tags?.some((t) => t.toLowerCase() === slug))
       .map((entry) => ({ ...entry.data, slug: entry.id }))
       .sort((a, b) => b.date.getTime() - a.date.getTime());
 

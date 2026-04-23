@@ -42,15 +42,17 @@ const rest = isFirstPage ? page.data.slice(1) : page.data;
   {page.url.next && <link slot="head" rel="next" href={page.url.next} />}
   <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
     <div class="max-w-[1100px] mx-auto">
-      {isFirstPage && (
-        <PostsHeader title="Blog" tags={allTags}>
-          <Fragment slot="subtitle">
-            I write about <span class="highlight-text">Swift</span>,{" "}
-            <span class="highlight-text">SwiftUI</span>, architecture and
-            everything I learn building apps for the Apple ecosystem.
-          </Fragment>
-        </PostsHeader>
-      )}
+      {
+        isFirstPage && (
+          <PostsHeader title="Blog" tags={allTags}>
+            <Fragment slot="subtitle">
+              I write about <span class="highlight-text">Swift</span>,{" "}
+              <span class="highlight-text">SwiftUI</span>, architecture and
+              everything I learn building apps for the Apple ecosystem.
+            </Fragment>
+          </PostsHeader>
+        )
+      }
       {isFirstPage && featured != null && <PostFeatured post={featured} />}
       {
         rest.length > 0 && (

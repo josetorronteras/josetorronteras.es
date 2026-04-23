@@ -17,7 +17,9 @@ const { currentPage, lastPage, prevUrl, nextUrl } = Astro.props;
           &larr; Previous
         </a>
       ) : (
-        <span class="page-btn page-btn--disabled" aria-disabled="true">&larr; Previous</span>
+        <span class="page-btn page-btn--disabled" aria-disabled="true">
+          &larr; Previous
+        </span>
       )}
       <span class="page-info" aria-label={`Page ${currentPage} of ${lastPage}`}>
         {currentPage} / {lastPage}
@@ -27,7 +29,9 @@ const { currentPage, lastPage, prevUrl, nextUrl } = Astro.props;
           Next &rarr;
         </a>
       ) : (
-        <span class="page-btn page-btn--disabled" aria-disabled="true">Next &rarr;</span>
+        <span class="page-btn page-btn--disabled" aria-disabled="true">
+          Next &rarr;
+        </span>
       )}
     </nav>
   )
@@ -48,7 +52,7 @@ const { currentPage, lastPage, prevUrl, nextUrl } = Astro.props;
   .page-btn--disabled {
     @apply border-border/10 text-text/20 cursor-default;
     &:hover {
-      @apply border-border/10 bg-transparent text-text/20;
+      @apply border-border/10 text-text/20 bg-transparent;
     }
   }
   .page-info {

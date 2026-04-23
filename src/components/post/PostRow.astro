@@ -28,9 +28,13 @@ const { post, activeTag } = Astro.props;
     <h3 class="post-row-title">{post.title}</h3>
     <p class="post-row-excerpt">{post.excerpt}</p>
     <div class="post-tags">
-      {post.tags.map((tag) => (
-        <span class:list={["post-tag", { active: tag === activeTag }]}>{tag}</span>
-      ))}
+      {
+        post.tags.map((tag) => (
+          <span class:list={["post-tag", { active: tag === activeTag }]}>
+            {tag}
+          </span>
+        ))
+      }
     </div>
   </div>
 </a>
