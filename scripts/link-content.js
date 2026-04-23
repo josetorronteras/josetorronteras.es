@@ -21,9 +21,14 @@ if (stat) {
     rmSync(link);
   } else if (stat.isDirectory()) {
     try {
-      execSync("git ls-files --error-unmatch src/data/content", { cwd: root, stdio: "pipe" });
+      execSync("git ls-files --error-unmatch src/data/content", {
+        cwd: root,
+        stdio: "pipe",
+      });
     } catch {
-      console.error("src/data/content is an untracked directory. Remove it manually first.");
+      console.error(
+        "src/data/content is an untracked directory. Remove it manually first.",
+      );
       process.exit(1);
     }
     rmSync(link, { recursive: true });
