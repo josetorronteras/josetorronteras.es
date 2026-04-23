@@ -29,11 +29,6 @@ const breadcrumbJsonLd = {
     {
       items.map((item, index) => (
         <li class="breadcrumb-item">
-          {index > 0 && (
-            <span class="breadcrumb-sep" aria-hidden="true">
-              /
-            </span>
-          )}
           {item.href ? (
             <a href={item.href} class="breadcrumb-link">
               {item.label}
@@ -41,6 +36,11 @@ const breadcrumbJsonLd = {
           ) : (
             <span class="breadcrumb-current" aria-current="page">
               {item.label}
+            </span>
+          )}
+          {index < items.length - 1 && (
+            <span class="breadcrumb-sep" aria-hidden="true">
+              /
             </span>
           )}
         </li>
@@ -59,7 +59,7 @@ const breadcrumbJsonLd = {
   @reference "@styles/global.css";
 
   .breadcrumbs {
-    @apply mb-10;
+    @apply mb-6;
   }
   .breadcrumb-list {
     @apply m-0 flex list-none flex-wrap items-center gap-1 p-0 text-sm;

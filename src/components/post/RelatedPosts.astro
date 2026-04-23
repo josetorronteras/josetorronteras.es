@@ -34,7 +34,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
               />
             </div>
             <div class="related-body">
-              <time class="related-date">
+              <time class="related-date" datetime={post.date.toISOString()}>
                 {dateFormatter.format(post.date)}
               </time>
               <h3 class="related-title">{post.title}</h3>
