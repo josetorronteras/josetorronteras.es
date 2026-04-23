@@ -1,0 +1,85 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Breadcrumbs from "@components/shared/Breadcrumbs.astro";
+import PostRow from "@components/post/PostRow.astro";
+import Pagination from "@components/shared/Pagination.astro";
+import { getCollection } from "astro:content";
+import type { GetStaticPathsOptions } from "astro";
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const entries = await getCollection("posts");
+  const allTags = [...new Set(entries.flatMap((post) => post.data.tags || []))];
+
+  return allTags.flatMap((tag) => {
+    const posts = entries
+      .filter((post) => post.data.tags?.includes(tag))
+      .map((entry) => ({ ...entry.data, slug: entry.id }))
+      .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+    return paginate(posts, {
+      params: { tag: tag.toLowerCase() },
+      props: { tag },
+      pageSize: 7,
+    });
+  });
+}
+
+const { page, tag } = Astro.props;
+---
+
+<Layout title={tag} description={`Posts about ${tag}`}>
+  <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
+    <div class="max-w-[1100px] mx-auto">
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Blog", href: "/posts" },
+          { label: tag },
+        ]}
+      />
+      <header class="header">
+        <span class="eyebrow">Tag</span>
+        <h1 class="title">{tag}</h1>
+        <p class="count">
+          {page.total}
+          {page.total === 1 ? "post" : "posts"}
+        </p>
+      </header>
+      <ul class="post-list">
+        {
+          page.data.map((post) => (
+            <li>
+              <PostRow post={post} activeTag={tag} />
+            </li>
+          ))
+        }
+      </ul>
+      <Pagination
+        currentPage={page.currentPage}
+        lastPage={page.lastPage}
+        prevUrl={page.url.prev}
+        nextUrl={page.url.next}
+      />
+    </div>
+  </main>
+</Layout>
+
+<style>
+  @reference "@styles/global.css";
+
+  .header {
+    @apply border-text/8 mb-12 border-b pb-8;
+  }
+  .eyebrow {
+    @apply text-primary mb-2 block text-xs font-bold tracking-[0.2em] uppercase;
+  }
+  .title {
+    @apply text-text mb-3 text-4xl font-bold tracking-tight sm:text-5xl;
+  }
+  .count {
+    @apply text-text/40 text-sm font-medium;
+  }
+  .post-list {
+    @apply m-0 list-none space-y-4 p-0;
+  }
+</style>
