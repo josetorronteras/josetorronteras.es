@@ -1,0 +1,315 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import type { GetStaticPathsOptions } from "astro";
+
+const PAGE_SIZE = 7;
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const entries = await getCollection("posts");
+  const allPosts = entries
+    .map((entry) => ({ ...entry.data, slug: entry.id }))
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
+  const allTags = [...new Set(allPosts.flatMap((p) => p.tags))];
+  return paginate(allPosts, { props: { allTags }, pageSize: PAGE_SIZE });
+}
+
+const { page, allTags } = Astro.props;
+const posts: typeof page.data = page.data;
+
+const isFirstPage = page.currentPage === 1;
+const [featured, ...rest] = isFirstPage ? posts : [null, ...posts];
+
+const RECENT_DAYS = 14;
+const isRecent =
+  featured &&
+  Date.now() - featured.date.getTime() < RECENT_DAYS * 24 * 60 * 60 * 1000;
+
+const dateLong = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+const dateShort = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+<Layout
+  title="Blog"
+  description="Articles about iOS development, Swift, SwiftUI and everything related to building apps."
+>
+  <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16">
+    <div class="max-w-[1100px] mx-auto">
+      <!-- Header (only on first page) -->
+      {
+        isFirstPage && (
+          <header class="header">
+            <div class="header-top">
+              <h1 class="title">Blog</h1>
+              <p class="subtitle">
+                I write about <span class="highlight-text">Swift</span>,{" "}
+                <span class="highlight-text">SwiftUI</span>, architecture and
+                everything I learn building apps for the Apple ecosystem.
+              </p>
+            </div>
+            {allTags.length > 0 && (
+              <nav class="tags-nav" aria-label="Filter by tag">
+                <span class="tags-label">Explore</span>
+                <ul class="tags-list">
+                  {allTags.map((tag) => (
+                    <li>
+                      <a
+                        href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
+                        class="tag-pill"
+                      >
+                        {tag}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+          </header>
+        )
+      }
+
+      <!-- Featured post (only on first page) -->
+      {
+        isFirstPage && featured && (
+          <section class="featured" aria-label="Featured post">
+            <a href={`/posts/${featured.slug}/`} class="featured-link">
+              <div class="featured-img-wrap">
+                <Image
+                  inferSize
+                  src={featured.image}
+                  alt={featured.imageAlt}
+                  widths={[400, 800, 1200]}
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  loading="eager"
+                  class="featured-img"
+                />
+                {isRecent && <span class="featured-badge">New</span>}
+              </div>
+              <div class="featured-body">
+                <time class="post-date">{dateLong.format(featured.date)}</time>
+                <h2 class="featured-title">{featured.title}</h2>
+                <p class="featured-excerpt">{featured.excerpt}</p>
+                <div class="featured-footer">
+                  <div class="post-tags">
+                    {featured.tags.map((tag) => (
+                      <span class="post-tag">{tag}</span>
+                    ))}
+                  </div>
+                  <span class="read-more">Read post &rarr;</span>
+                </div>
+              </div>
+            </a>
+          </section>
+        )
+      }
+
+      <!-- Post list -->
+      {
+        rest.length > 0 && (
+          <section class="posts-section" aria-label="All posts">
+            <h2 class="section-heading">
+              {isFirstPage ? "More posts" : "Posts"}
+            </h2>
+            <ul class="post-list">
+              {rest.map((post) => (
+                <li>
+                  <a href={`/posts/${post.slug}/`} class="post-row">
+                    <div class="post-row-img-wrap">
+                      <Image
+                        inferSize
+                        src={post.image}
+                        alt={post.imageAlt}
+                        widths={[200, 400]}
+                        sizes="180px"
+                        loading="lazy"
+                        class="post-row-img"
+                      />
+                    </div>
+                    <div class="post-row-body">
+                      <time class="post-date">
+                        {dateShort.format(post.date)}
+                      </time>
+                      <h3 class="post-row-title">{post.title}</h3>
+                      <p class="post-row-excerpt">{post.excerpt}</p>
+                      <div class="post-tags">
+                        {post.tags.map((tag) => (
+                          <span class="post-tag">{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+      <!-- Pagination -->
+      {
+        page.lastPage > 1 && (
+          <nav class="pagination" aria-label="Pagination">
+            {page.url.prev ? (
+              <a href={page.url.prev} class="page-btn">
+                &larr; Previous
+              </a>
+            ) : (
+              <span class="page-btn page-btn--disabled">&larr; Previous</span>
+            )}
+            <span class="page-info">
+              {page.currentPage} / {page.lastPage}
+            </span>
+            {page.url.next ? (
+              <a href={page.url.next} class="page-btn">
+                Next &rarr;
+              </a>
+            ) : (
+              <span class="page-btn page-btn--disabled">Next &rarr;</span>
+            )}
+          </nav>
+        )
+      }
+    </div>
+  </main>
+</Layout>
+
+<style>
+  @reference "@styles/global.css";
+
+  .header {
+    @apply mb-12 sm:mb-16;
+  }
+  .header-top {
+    @apply mb-2;
+  }
+  .title {
+    @apply text-text mb-4 text-4xl font-bold tracking-tight sm:text-5xl;
+  }
+  .subtitle {
+    @apply text-text/50 max-w-xl text-base leading-relaxed sm:text-lg;
+  }
+  .tags-nav {
+    @apply flex flex-wrap items-center gap-3;
+  }
+  .tags-label {
+    @apply text-text/30 mr-1 text-xs font-semibold tracking-widest uppercase;
+  }
+  .tags-list {
+    @apply m-0 flex list-none flex-wrap gap-2 p-0;
+  }
+  .tag-pill {
+    @apply border-border/30 text-text/60 rounded-full border px-3 py-1.5 text-xs font-medium no-underline transition-all duration-200;
+    &:hover {
+      @apply border-primary text-primary bg-primary/10;
+    }
+  }
+  .featured {
+    @apply mb-14 sm:mb-20;
+  }
+  .featured-link {
+    @apply bg-background-alt border-border/20 grid gap-0 overflow-hidden rounded-2xl border no-underline transition-all duration-300 sm:grid-cols-2;
+    &:hover {
+      @apply border-primary/40 shadow-primary/5 shadow-2xl;
+      .featured-img {
+        transform: scale(1.04);
+      }
+      .read-more {
+        @apply text-primary;
+      }
+    }
+  }
+  .featured-img-wrap {
+    @apply relative overflow-hidden;
+    aspect-ratio: 4/3;
+  }
+  .featured-img {
+    @apply h-full w-full object-cover transition-transform duration-700 ease-out;
+  }
+  .featured-badge {
+    @apply bg-primary absolute top-4 left-4 rounded-md px-2.5 py-1 text-[0.6rem] font-bold tracking-[0.15em] text-white uppercase;
+  }
+  .featured-body {
+    @apply flex flex-col justify-center gap-3 p-6 sm:p-8 lg:p-10;
+  }
+  .featured-title {
+    @apply text-text text-xl leading-snug font-bold tracking-tight sm:text-2xl lg:text-3xl;
+  }
+  .featured-excerpt {
+    @apply text-text/50 line-clamp-3 text-sm leading-relaxed sm:text-base;
+  }
+  .featured-footer {
+    @apply mt-2 flex flex-wrap items-center justify-between gap-4;
+  }
+  .read-more {
+    @apply text-text/30 text-sm font-medium transition-colors duration-200;
+  }
+  .post-date {
+    @apply text-text/30 text-xs font-medium tracking-wider uppercase;
+  }
+  .post-tags {
+    @apply flex flex-wrap gap-1.5;
+  }
+  .post-tag {
+    @apply bg-primary/8 text-primary/70 rounded-full px-2 py-0.5 text-[0.65rem];
+  }
+  .posts-section {
+    @apply border-text/8 border-t pt-10;
+  }
+  .section-heading {
+    @apply text-text/40 mb-8 text-xs font-bold tracking-[0.2em] uppercase;
+  }
+  .post-list {
+    @apply m-0 list-none space-y-4 p-0;
+  }
+  .post-row {
+    @apply flex gap-5 rounded-xl border border-transparent p-3 no-underline transition-all duration-200 sm:gap-6 sm:p-4;
+    &:hover {
+      @apply bg-background-alt border-border/20;
+      .post-row-title {
+        @apply text-primary;
+      }
+    }
+  }
+  .post-row-img-wrap {
+    @apply w-24 shrink-0 overflow-hidden rounded-lg sm:w-36;
+    aspect-ratio: 16/10;
+  }
+  .post-row-img {
+    @apply h-full w-full object-cover;
+  }
+  .post-row-body {
+    @apply flex min-w-0 flex-col gap-1.5 py-0.5;
+  }
+  .post-row-title {
+    @apply text-text text-base leading-snug font-semibold transition-colors duration-200 sm:text-lg;
+  }
+  .post-row-excerpt {
+    @apply text-text/40 line-clamp-2 hidden text-sm leading-relaxed sm:block;
+  }
+  .pagination {
+    @apply border-text/8 mt-12 flex items-center justify-between border-t pt-8;
+  }
+  .page-btn {
+    @apply border-border/30 text-text/60 rounded-lg border px-4 py-2 text-sm font-medium no-underline transition-all duration-200;
+    &:hover {
+      @apply border-primary text-primary bg-primary/10;
+    }
+  }
+  .page-btn--disabled {
+    @apply border-border/10 text-text/20 cursor-default;
+    &:hover {
+      @apply border-border/10 bg-transparent text-text/20;
+    }
+  }
+  .page-info {
+    @apply text-text/30 text-sm;
+  }
+</style>
