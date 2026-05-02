@@ -15,15 +15,15 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
     "@fontsource-variable/space-grotesk": "^5.2.7",
-    "astro": "^6.1.6"
+    "astro": "^6.2.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
     "@tailwindcss/vite": "^4.2.0",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.7.1",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4.1.15",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }
