@@ -8,18 +8,42 @@ const { class: className = "" } = Astro.props;
 
 <ul class={`${className} flex gap-4`}>
   <li>
-    <a href="mailto:hello@josetorronteras.com" aria-label="Email">
+    <a
+      href="mailto:hello@josetorronteras.com"
+      aria-label="Email"
+      data-ackee-social="Email"
+    >
       <MailIcon />
     </a>
   </li>
   <li>
-    <a href="https://github.com/josetorronteras" aria-label="Github">
+    <a
+      href="https://github.com/josetorronteras"
+      aria-label="Github"
+      data-ackee-social="GitHub"
+    >
       <GithubIcon />
     </a>
   </li>
   <li>
-    <a href="https://linkedin.com/in/josetorronteras" aria-label="LinkedIn">
+    <a
+      href="https://linkedin.com/in/josetorronteras"
+      aria-label="LinkedIn"
+      data-ackee-social="LinkedIn"
+    >
       <LinkedinIcon />
     </a>
   </li>
 </ul>
+
+<script>
+  import { ackee, EVENTS } from "@lib/ackee";
+
+  document
+    .querySelectorAll<HTMLAnchorElement>("[data-ackee-social]")
+    .forEach((el) => {
+      el.addEventListener("click", () => {
+        ackee.action(EVENTS.SOCIAL_CLICK, { key: el.dataset.ackeeSocial! });
+      });
+    });
+</script>

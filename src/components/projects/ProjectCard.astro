@@ -16,7 +16,13 @@ const Icon = techIcons[project.icon];
     {Icon ? <Icon /> : null}
     <GithubIcon class="w-5 fill-slate-400" />
   </div>
-  <a class="card-link title" href={`${project.githubUrl}`} target="_blank">
+  <a
+    class="card-link title"
+    href={`${project.githubUrl}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    data-ackee-project={project.title}
+  >
     {project.title}
   </a>
   <p class="description">
@@ -46,3 +52,15 @@ const Icon = techIcons[project.icon];
     @apply line-clamp-1 text-left text-xs font-medium;
   }
 </style>
+
+<script>
+  import { ackee, EVENTS } from "@lib/ackee";
+
+  document
+    .querySelectorAll<HTMLAnchorElement>("[data-ackee-project]")
+    .forEach((el) => {
+      el.addEventListener("click", () => {
+        ackee.action(EVENTS.PROJECT_CLICK, { key: el.dataset.ackeeProject! });
+      });
+    });
+</script>
