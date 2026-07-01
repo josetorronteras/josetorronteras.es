@@ -15,14 +15,14 @@ jobs:
     name: Install Dependencies
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 'latest'
       - name: Cache node_modules
         id: cache-node-modules
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: node_modules
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
@@ -39,7 +39,7 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.head_ref }}
       - name: Set up Node.js
@@ -47,7 +47,7 @@ jobs:
         with:
           node-version: 'latest'
       - name: Restore node_modules
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: node_modules
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
@@ -66,7 +66,7 @@ jobs:
     name: Build project
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
       - name: Set up Node.js
@@ -74,14 +74,14 @@ jobs:
         with:
           node-version: 'latest'
       - name: Restore node_modules
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: node_modules
           key: node-modules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
           fail-on-cache-miss: true
       - name: Clone private content repository
         if: github.event.pull_request.user.login != 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == github.repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: josetorronteras/josetorronteras.es-content
           token: ${{ secrets.PAT }}
