@@ -60,13 +60,11 @@ const pageDescription = isFirstPage
         </p>
       </header>
       <ul class="post-list">
-        {
-          page.data.map((post) => (
-            <li>
-              <PostRow post={post} activeTag={tag} />
-            </li>
-          ))
-        }
+        {page.data.map((post) => (
+          <li>
+            <PostRow post={post} activeTag={tag} />
+          </li>
+        ))}
       </ul>
       <Pagination
         currentPage={page.currentPage}

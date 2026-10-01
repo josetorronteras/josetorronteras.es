@@ -14,18 +14,14 @@ const { projects } = Astro.props;
     <h2 class="heading-secondary">Latest Projects</h2>
   </header>
   <div class="projects-grid">
-    {
-      projects
-        .slice(0, 8)
-        .map((project: Project, index: number) => (
-          <ProjectCard
-            project={project}
-            class:list={[
-              index === 0 || index === 5 ? "sm:col-span-2" : "sm:col-span-1",
-            ]}
-          />
-        ))
-    }
+    {projects.slice(0, 8).map((project: Project, index: number) => (
+      <ProjectCard
+        project={project}
+        class:list={[
+          index === 0 || index === 5 ? "sm:col-span-2" : "sm:col-span-1",
+        ]}
+      />
+    ))}
   </div>
 </section>
 

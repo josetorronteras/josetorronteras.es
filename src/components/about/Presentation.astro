@@ -11,26 +11,22 @@ import { presentation } from "@data/content/Presentation";
   </h1>
   <div class="flex flex-col md:flex-row gap-12 mt-5 sm:mt-10">
     <aside class="min-w-[180px] lg:max-w-[260px] order-1 md:order-2">
-      {
-        presentation.avatar ? (
-          <Image
-            inferSize
-            src={presentation.avatar}
-            alt={presentation.name}
-            class="profile-image"
-          />
-        ) : (
-          <div class="profile-image bg-border" />
-        )
-      }
+      {presentation.avatar ? (
+        <Image
+          inferSize
+          src={presentation.avatar}
+          alt={presentation.name}
+          class="profile-image"
+        />
+      ) : (
+        <div class="profile-image bg-border" />
+      )}
     </aside>
     <div class="max-w-[700px] order-2 md:order-1">
       <div class="paragraph-content">
-        {
-          presentation.paragraphs.map((paragraph) => (
-            <p class="paragraph">{paragraph}</p>
-          ))
-        }
+        {presentation.paragraphs.map((paragraph) => (
+          <p class="paragraph">{paragraph}</p>
+        ))}
         <SocialLinks />
       </div>
     </div>
