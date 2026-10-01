@@ -14,25 +14,23 @@ const { title, tags } = Astro.props;
       <slot name="subtitle" />
     </p>
   </div>
-  {
-    tags.length > 0 && (
-      <nav class="tags-nav" aria-label="Filter by tag">
-        <span class="tags-label">Explore</span>
-        <ul class="tags-list">
-          {tags.map((tag) => (
-            <li>
-              <a
-                href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
-                class="tag-pill"
-              >
-                {tag}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    )
-  }
+  {tags.length > 0 && (
+    <nav class="tags-nav" aria-label="Filter by tag">
+      <span class="tags-label">Explore</span>
+      <ul class="tags-list">
+        {tags.map((tag) => (
+          <li>
+            <a
+              href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
+              class="tag-pill"
+            >
+              {tag}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )}
 </header>
 
 <style>

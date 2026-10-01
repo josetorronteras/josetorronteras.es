@@ -33,17 +33,15 @@ const formattedDate = post.date.toLocaleDateString("es-ES", {
       </a>
     </h2>
     <p class="excerpt">{post.excerpt}</p>
-    {
-      post.tags && post.tags.length > 0 && (
-        <div class="tags">
-          {post.tags.map((tag: string) => (
-            <a href={`/tags/${tag.toLowerCase()}`} class="tag">
-              {tag}
-            </a>
-          ))}
-        </div>
-      )
-    }
+    {post.tags && post.tags.length > 0 && (
+      <div class="tags">
+        {post.tags.map((tag: string) => (
+          <a href={`/tags/${tag.toLowerCase()}`} class="tag">
+            {tag}
+          </a>
+        ))}
+      </div>
+    )}
   </div>
 </article>
 

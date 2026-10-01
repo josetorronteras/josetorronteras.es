@@ -6,16 +6,14 @@ import { careers } from "@data/content/Careers";
 
 <article class="career-timeline">
   <ol class="timeline-list">
-    {
-      careers.map((career) => (
-        <li class="timeline-item">
-          <span class="timeline-icon">
-            <BriefIcon class="h-3" />
-          </span>
-          <CareerSectionItem career={career} />
-        </li>
-      ))
-    }
+    {careers.map((career) => (
+      <li class="timeline-item">
+        <span class="timeline-icon">
+          <BriefIcon class="h-3" />
+        </span>
+        <CareerSectionItem career={career} />
+      </li>
+    ))}
   </ol>
 </article>
 

@@ -67,20 +67,18 @@ const formattedDate = dateLong.format(post.data.date);
           <div class="hero-text">
             <div class="hero-meta">
               <time class="hero-date">{formattedDate}</time>
-              {
-                post.data.tags.length > 0 && (
-                  <div class="hero-tags">
-                    {post.data.tags.map((tag: string) => (
-                      <a
-                        href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
-                        class="hero-tag"
-                      >
-                        {tag}
-                      </a>
-                    ))}
-                  </div>
-                )
-              }
+              {post.data.tags.length > 0 && (
+                <div class="hero-tags">
+                  {post.data.tags.map((tag: string) => (
+                    <a
+                      href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
+                      class="hero-tag"
+                    >
+                      {tag}
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
             <h1 class="hero-title">{post.data.title}</h1>
             <p class="hero-excerpt">{post.data.excerpt}</p>
@@ -101,26 +99,22 @@ const formattedDate = dateLong.format(post.data.date);
 
       <!-- Content -->
       <div class="post-layout">
-        {
-          toc.length > 0 && (
-            <nav class="toc-mobile">
-              <PostToc toc={toc} />
-            </nav>
-          )
-        }
+        {toc.length > 0 && (
+          <nav class="toc-mobile">
+            <PostToc toc={toc} />
+          </nav>
+        )}
         <div class="post-columns">
           <article class="prose">
             <Content />
           </article>
-          {
-            toc.length > 0 && (
-              <aside class="post-sidebar">
-                <div class="toc-sticky">
-                  <PostToc toc={toc} />
-                </div>
-              </aside>
-            )
-          }
+          {toc.length > 0 && (
+            <aside class="post-sidebar">
+              <div class="toc-sticky">
+                <PostToc toc={toc} />
+              </div>
+            </aside>
+          )}
         </div>
       </div>
 

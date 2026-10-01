@@ -10,41 +10,39 @@ interface Props {
 const { posts: related } = Astro.props;
 ---
 
-{
-  related.length > 0 && (
-    <section class="related-section" aria-label="Related posts">
-      <h2 class="related-heading">Related posts</h2>
-      <div class="related-grid">
-        {related.map((post) => (
-          <a href={`/posts/${post.slug}/`} class="related-card">
-            <div class="related-img-wrap">
-              <Image
-                inferSize
-                src={post.image}
-                alt={post.imageAlt}
-                widths={[200, 400]}
-                sizes="(max-width: 640px) 100vw, 33vw"
-                loading="lazy"
-                class="related-img"
-              />
+{related.length > 0 && (
+  <section class="related-section" aria-label="Related posts">
+    <h2 class="related-heading">Related posts</h2>
+    <div class="related-grid">
+      {related.map((post) => (
+        <a href={`/posts/${post.slug}/`} class="related-card">
+          <div class="related-img-wrap">
+            <Image
+              inferSize
+              src={post.image}
+              alt={post.imageAlt}
+              widths={[200, 400]}
+              sizes="(max-width: 640px) 100vw, 33vw"
+              loading="lazy"
+              class="related-img"
+            />
+          </div>
+          <div class="related-body">
+            <time class="related-date" datetime={post.date.toISOString()}>
+              {dateShort.format(post.date)}
+            </time>
+            <h3 class="related-title">{post.title}</h3>
+            <div class="related-tags">
+              {post.tags.slice(0, 3).map((tag) => (
+                <span class="related-tag">{tag}</span>
+              ))}
             </div>
-            <div class="related-body">
-              <time class="related-date" datetime={post.date.toISOString()}>
-                {dateShort.format(post.date)}
-              </time>
-              <h3 class="related-title">{post.title}</h3>
-              <div class="related-tags">
-                {post.tags.slice(0, 3).map((tag) => (
-                  <span class="related-tag">{tag}</span>
-                ))}
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
-    </section>
-  )
-}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+)}
 
 <style>
   @reference "@styles/global.css";

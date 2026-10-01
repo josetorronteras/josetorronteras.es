@@ -12,9 +12,7 @@ const posts = entries
 ---
 
 <Layout>
-  <main
-    class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16 pb-0 sm:pb-10 md:pb-20"
-  >
+  <main class="container px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-16 pb-0 sm:pb-10 md:pb-20">
     <div class="max-w-[1008px] mx-auto md:text-center">
       <h1 class="heading-primary">
         Crafting Pixel-Perfect iOS Apps with Code & Creativity
@@ -22,10 +20,9 @@ const posts = entries
       <div class="content-description">
         <p>
           I'm an iOS developer who turns ideas into seamless, delightful apps
-          using <span class="highlight-text">Swift</span>, <span
-            class="highlight-text">SwiftUI</span
-          >, and a pinch of magic. Explore my journey, tips, and tools for
-          building apps that users love.
+          using <span class="highlight-text">Swift</span>,{" "}
+          <span class="highlight-text">SwiftUI</span>, and a pinch of magic.
+          Explore my journey, tips, and tools for building apps that users love.
         </p>
       </div>
       {posts.length > 0 && <PostsSection posts={posts} />}

@@ -34,7 +34,9 @@ const isRecent =
       <p class="featured-excerpt">{post.excerpt}</p>
       <div class="featured-footer">
         <div class="post-tags">
-          {post.tags.map((tag) => <span class="post-tag">{tag}</span>)}
+          {post.tags.map((tag) => (
+            <span class="post-tag">{tag}</span>
+          ))}
         </div>
         <span class="read-more">Read post &rarr;</span>
       </div>

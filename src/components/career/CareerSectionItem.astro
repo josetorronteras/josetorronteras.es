@@ -17,31 +17,27 @@ const { career } = Astro.props;
     {career.current && <Badge text="Current" />}
   </h3>
   <div class="company-links">
-    {
-      career.companies.map((company) => (
-        <Link href={company.link} label={company.name} />
-      ))
-    }
+    {career.companies.map((company) => (
+      <Link href={company.link} label={company.name} />
+    ))}
   </div>
   <div class="career-duration">
     <time>{career.startDate}</time> - <time>{career.endDate}</time>
   </div>
   <a href={career.app.link} target="_blank" class="career-card">
     <div class="career-icon">
-      {
-        career.app.img ? (
-          <Image
-            inferSize
-            src={career.app.img}
-            alt={career.app.name}
-            width={56}
-            height={56}
-            class:list={["rounded-xl"]}
-          />
-        ) : (
-          <div class="icon-placeholder" />
-        )
-      }
+      {career.app.img ? (
+        <Image
+          inferSize
+          src={career.app.img}
+          alt={career.app.name}
+          width={56}
+          height={56}
+          class:list={["rounded-xl"]}
+        />
+      ) : (
+        <div class="icon-placeholder" />
+      )}
     </div>
     <div class="career-details">
       <h4 class="career-name">{career.app.name}</h4>
